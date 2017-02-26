@@ -1,0 +1,18 @@
+<package>
+  <name>bluecrescent_ros_control</name>
+  <version>0.1.0</version>
+  <description>bluecrescent_ros_control</description>
+  <maintainer email="ick40195+ros@gmail.com">BlueCrescent</maintainer>
+
+  <license>BSD</license>
+
+  <author email="ick40195+ros@gmail.com">BlueCrescent</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>bluecrescent_description</run_depend>
+  <run_depend>bluecrescent_control</run_depend> 
+
+  <export>
+  </export>
+</package>

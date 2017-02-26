@@ -1,0 +1,554 @@
+<?xml version="1.0"?>
+<robot name="bluecrescent">
+
+      <material name="skin">
+        <color rgba="1 0.6 0.4 1"/>
+      </material>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+      <material name="green">
+        <color rgba="0 1 0 1"/>
+      </material>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+
+
+  <link name="head">
+    <visual>
+      <geometry>
+        <box size="0.06 0.06 0.06"/>
+      </geometry>
+      <material name="skin"/>
+    </visual>
+   <collision>
+      <geometry>
+        <box size="0.06 0.06 0.06"/>
+      </geometry>
+   </collision>
+
+  </link>
+  <joint name="head_roll" type="revolute">
+	<limit effort="1000.0" lower="-0.5" upper="0.5" velocity="0.5"/>
+  	<parent link="neckjoint"/>
+ 	<child link="head"/>
+  	<origin rpy="0 0 0" xyz="0 0 0.045"/>
+  </joint>
+  <link name="neckjoint">
+  </link>
+  <joint name="head_yaw" type="revolute">
+	<limit effort="1000.0" lower="-0.5" upper="0.5" velocity="0.5"/>
+  	<parent link="neck"/>
+	<child link="neckjoint"/>
+	<axis xyz="0 0 1"/>
+  	<origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="neck">
+    <visual>
+      <geometry>
+        <cylinder length="0.03" radius="0.01"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.03" radius="0.01"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="neck_body" type="fixed">
+  	<parent link="base_link"/>
+ 	<child link="neck"/>
+	<origin xyz="0 0 0.085"/>
+  </joint>
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.06 0.03 0.14"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.06 0.03 0.14"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="arm_shoulder_right_roll" type="revolute">
+	<limit effort="1000.0" lower="0" upper="3.14" velocity="0.5"/>
+  	<parent link="base_link"/>
+ 	<child link="arm_shoulder_right_joint"/>
+  	<origin rpy="0 -0.1 0" xyz="0.045 0 0.06"/>
+  </joint>
+  <link name="arm_shoulder_right_joint">
+  </link>
+  <joint name="arm_shoulder_right_pitch" type="revolute">
+	<limit effort="1000.0" lower="-3.14" upper="0" velocity="0.5"/>
+  	<parent link="arm_shoulder_right_joint"/>
+ 	<child link="arm_upper_right"/>
+	<axis xyz="0 1 0"/>
+  	<origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="arm_upper_right">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.03"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.03"/>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  <joint name="arm_elbow_right_yaw" type="revolute">
+	<limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5"/>
+  	<parent link="arm_upper_right"/>
+  	<child link="arm_elbow_right_joint"/>
+	<axis xyz="0 0 1"/>
+  	<origin xrpy="0 0 0" xyz="0.00 0 -0.08"/>
+  </joint>
+  <link name="arm_elbow_right_joint">
+  </link>
+  <joint name="arm_elbow_right_roll" type="revolute">
+	<limit effort="1000.0" lower="0" upper="3.14" velocity="0.5"/>
+  	<parent link="arm_elbow_right_joint"/>
+  	<child link="arm_lower_right"/>
+  	<origin xrpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="arm_lower_right">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.03"/>
+      <material name="gray"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.07" radius="0.01"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.03"/>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  <joint name="arm_wrist_right_yaw" type="revolute">
+	<limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5"/>
+  	<parent link="arm_lower_right"/>
+	<axis xyz="0 0 1"/>
+  	<child link="arm_hand_right"/>
+  	<origin xrpy="0 0 0" xyz="0.00 0 -0.07"/>
+  </joint>
+  <link name="arm_hand_right">
+    <visual>
+      <geometry>
+        <box size="0.02 0.01 0.02"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.01"/>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.02 0.01 0.02"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.01"/>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+
+  <!-- LEFT SIDE  -->
+  <joint name="arm_shoulder_left_roll" type="revolute">
+	<limit effort="1000.0" lower="0" upper="3.14" velocity="0.5"/>
+  	<parent link="base_link"/>
+ 	<child link="arm_shoulder_left_joint"/>
+  	<origin rpy="0 0.1 0" xyz="-0.045 0 0.06"/>
+  </joint>
+  <link name="arm_shoulder_left_joint">
+  </link>
+  <joint name="arm_shoulder_left_pitch" type="revolute">
+	<limit effort="1000.0" lower="0" upper="3.14" velocity="0.5"/>
+  	<parent link="arm_shoulder_left_joint"/>
+ 	<child link="arm_upper_left"/>
+	<axis xyz="0 1 0"/>
+  	<origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="arm_upper_left">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0.0 -0.03"/>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.03"/>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  <joint name="arm_elbow_left_yaw" type="revolute">
+	<limit effort="1000.0" lower="-1.57" upper="1.57" velocity="0.5"/>
+  	<parent link="arm_upper_left"/>
+  	<child link="arm_elbow_left_joint"/>
+	<axis xyz="0 0 1"/>
+  	<origin xrpy="0 0 0" xyz="0 0 -0.08"/>
+  </joint>
+  <link name="arm_elbow_left_joint">
+  </link>
+  <joint name="arm_elbow_left_roll" type="revolute">
+	<limit effort="1000.0" lower="0.0" upper="3.14" velocity="0.5"/>
+  	<parent link="arm_elbow_left_joint"/>
+  	<child link="arm_lower_left"/>
+  	<origin xrpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="arm_lower_left">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.03"/>
+      <material name="gray"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.07" radius="0.01"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.03"/>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  <joint name="arm_wrist_left_yaw" type="revolute">
+	<limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5"/>
+  	<parent link="arm_lower_left"/>
+	<axis xyz="0 0 1"/>
+  	<child link="arm_hand_left"/>
+  	<origin xrpy="0 0 0" xyz="0.00 0 -0.07"/>
+  </joint>
+  <link name="arm_hand_left">
+    <visual>
+      <geometry>
+        <box size="0.02 0.01 0.02"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.01"/>
+      <material name="green"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.02 0.01 0.02"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.01"/>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+
+
+  <joint name="groin_right" type="fixed">
+  	<parent link="base_link"/>
+ 	<child link="leg_upper_right"/>
+  	<origin xyz="0.02 0 -0.11"/>
+  </joint>
+  <link name="leg_upper_right">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  <joint name="knee_right" type="fixed">
+  	<parent link="leg_upper_right"/>
+  	<child link="leg_lower_right"/>
+  	<origin xyz="0.00 0 -0.08"/>
+  </joint>
+  <link name="leg_lower_right">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+      <material name="gray"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  <joint name="ankle_right" type="fixed">
+  	<parent link="leg_lower_right"/>
+  	<child link="foot_right"/>
+  	<origin xyz="0.00 0.015 -0.05"/>
+  </joint>
+  <link name="foot_right">
+    <visual>
+      <geometry>
+        <box size="0.02 0.05 0.02"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.02 0.05 0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  
+  
+  <joint name="groin_left" type="fixed">
+  	<parent link="base_link"/>
+ 	<child link="leg_upper_left"/>
+  	<origin xyz="-0.02 0 -0.11"/>
+  </joint>
+  <link name="leg_upper_left">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  <joint name="knee_left" type="fixed">
+  	<parent link="leg_upper_left"/>
+  	<child link="leg_lower_left"/>
+  	<origin xyz="0.00 0 -0.08"/>
+  </joint>
+  <link name="leg_lower_left">
+    <visual>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+      <material name="gray"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.08" radius="0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+  <joint name="ankle_left" type="fixed">
+  	<parent link="leg_lower_left"/>
+  	<child link="foot_left"/>
+  	<origin xyz="0 0.015 -0.05"/>
+  </joint>
+  <link name="foot_left">
+    <visual>
+      <geometry>
+        <box size="0.02 0.05 0.02"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.02 0.05 0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.006"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+    </inertial>
+  </link>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/bluecrescent</robotNamespace>
+    </plugin>
+  </gazebo>
+
+  <!--
+<joint name="neck_body">
+<joint name="groin_right">
+<joint name="knee_right">
+<joint name="ankle_right">
+<joint name="groin_left">
+<joint name="knee_left">
+<joint name="ankle_left">
+-->
+
+  <transmission name="head_roll_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="head_roll">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="head_roll_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="head_yaw_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="head_yaw">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="head_yaw_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="arm_shoulder_left_roll_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="arm_shoulder_left_roll">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_shoulder_left_roll_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="arm_shoulder_left_pitch_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="arm_shoulder_left_pitch">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_shoulder_left_pitch_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="arm_elbow_left_yaw_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="arm_elbow_left_yaw">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_elbow_left_yaw_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="arm_elbow_left_roll_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="arm_elbow_left_roll">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_elbow_left_roll_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="arm_wrist_left_roll_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+      <joint name="arm_wrist_left_yaw">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_wrist_left_roll_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+  <transmission name="arm_shoulder_right_roll_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="arm_shoulder_right_roll">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_shoulder_right_roll_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="arm_shoulder_right_pitch_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="arm_shoulder_right_pitch">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_shoulder_right_pitch_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="arm_elbow_right_yaw_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="arm_elbow_right_yaw">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_elbow_right_yaw_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="arm_elbow_right_roll_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="arm_elbow_right_roll">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_elbow_right_roll_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="arm_wrist_right_roll_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+      <joint name="arm_wrist_right_yaw">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="arm_wrist_right_roll_motor">
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+</robot>

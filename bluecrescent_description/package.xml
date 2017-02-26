@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <name>bluecrescent_description</name>
+  <version>0.0.0</version>
+  <description>The bluecrescent_description package</description>
+
+  <maintainer email="ick40195+ros@gmail.com">BlueCrescent</maintainer>
+
+  <license>BSD</license>
+
+  <author email="ick40195+ros@gmail.com">BlueCrescent</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

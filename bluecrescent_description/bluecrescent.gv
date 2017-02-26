@@ -1,0 +1,62 @@
+digraph G {
+node [shape=box];
+"base_link" [label="base_link"];
+"arm_shoulder_left_joint" [label="arm_shoulder_left_joint"];
+"arm_upper_left" [label="arm_upper_left"];
+"arm_elbow_left_joint" [label="arm_elbow_left_joint"];
+"arm_lower_left" [label="arm_lower_left"];
+"arm_hand_left" [label="arm_hand_left"];
+"arm_shoulder_right_joint" [label="arm_shoulder_right_joint"];
+"arm_upper_right" [label="arm_upper_right"];
+"arm_elbow_right_joint" [label="arm_elbow_right_joint"];
+"arm_lower_right" [label="arm_lower_right"];
+"arm_hand_right" [label="arm_hand_right"];
+"leg_upper_left" [label="leg_upper_left"];
+"leg_lower_left" [label="leg_lower_left"];
+"foot_left" [label="foot_left"];
+"leg_upper_right" [label="leg_upper_right"];
+"leg_lower_right" [label="leg_lower_right"];
+"foot_right" [label="foot_right"];
+"neck" [label="neck"];
+"neckjoint" [label="neckjoint"];
+"head" [label="head"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"base_link" -> "arm_shoulder_left_roll" [label="xyz: -0.045 0 0.06 \nrpy: 0 0.1 0"]
+"arm_shoulder_left_roll" -> "arm_shoulder_left_joint"
+"arm_shoulder_left_joint" -> "arm_shoulder_left_pitch" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"arm_shoulder_left_pitch" -> "arm_upper_left"
+"arm_upper_left" -> "arm_elbow_left_yaw" [label="xyz: 0 0 -0.08 \nrpy: 0 -0 0"]
+"arm_elbow_left_yaw" -> "arm_elbow_left_joint"
+"arm_elbow_left_joint" -> "arm_elbow_left_roll" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"arm_elbow_left_roll" -> "arm_lower_left"
+"arm_lower_left" -> "arm_wrist_left_yaw" [label="xyz: 0 0 -0.07 \nrpy: 0 -0 0"]
+"arm_wrist_left_yaw" -> "arm_hand_left"
+"base_link" -> "arm_shoulder_right_roll" [label="xyz: 0.045 0 0.06 \nrpy: 0 -0.1 0"]
+"arm_shoulder_right_roll" -> "arm_shoulder_right_joint"
+"arm_shoulder_right_joint" -> "arm_shoulder_right_pitch" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"arm_shoulder_right_pitch" -> "arm_upper_right"
+"arm_upper_right" -> "arm_elbow_right_yaw" [label="xyz: 0 0 -0.08 \nrpy: 0 -0 0"]
+"arm_elbow_right_yaw" -> "arm_elbow_right_joint"
+"arm_elbow_right_joint" -> "arm_elbow_right_roll" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"arm_elbow_right_roll" -> "arm_lower_right"
+"arm_lower_right" -> "arm_wrist_right_yaw" [label="xyz: 0 0 -0.07 \nrpy: 0 -0 0"]
+"arm_wrist_right_yaw" -> "arm_hand_right"
+"base_link" -> "groin_left" [label="xyz: -0.02 0 -0.11 \nrpy: 0 -0 0"]
+"groin_left" -> "leg_upper_left"
+"leg_upper_left" -> "knee_left" [label="xyz: 0 0 -0.08 \nrpy: 0 -0 0"]
+"knee_left" -> "leg_lower_left"
+"leg_lower_left" -> "ankle_left" [label="xyz: 0 0.015 -0.05 \nrpy: 0 -0 0"]
+"ankle_left" -> "foot_left"
+"base_link" -> "groin_right" [label="xyz: 0.02 0 -0.11 \nrpy: 0 -0 0"]
+"groin_right" -> "leg_upper_right"
+"leg_upper_right" -> "knee_right" [label="xyz: 0 0 -0.08 \nrpy: 0 -0 0"]
+"knee_right" -> "leg_lower_right"
+"leg_lower_right" -> "ankle_right" [label="xyz: 0 0.015 -0.05 \nrpy: 0 -0 0"]
+"ankle_right" -> "foot_right"
+"base_link" -> "neck_body" [label="xyz: 0 0 0.085 \nrpy: 0 -0 0"]
+"neck_body" -> "neck"
+"neck" -> "head_yaw" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"head_yaw" -> "neckjoint"
+"neckjoint" -> "head_roll" [label="xyz: 0 0 0.045 \nrpy: 0 -0 0"]
+"head_roll" -> "head"
+}
