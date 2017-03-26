@@ -13,3 +13,7 @@ controller_list:
       - arm_elbow_right_yaw
       - arm_elbow_right_roll
       - arm_wrist_right_yaw
+  - name: fake_head_controller
+    joints:
+      - head_yaw
+      - head_roll
