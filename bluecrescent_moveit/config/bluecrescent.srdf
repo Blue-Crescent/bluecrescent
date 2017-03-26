@@ -14,70 +14,67 @@
         <link name="arm_upper_left" />
         <link name="arm_elbow_left_joint" />
         <link name="arm_lower_left" />
-        <link name="arm_hand_left" />
         <joint name="arm_shoulder_left_roll" />
         <joint name="arm_shoulder_left_pitch" />
         <joint name="arm_elbow_left_yaw" />
         <joint name="arm_elbow_left_roll" />
-        <joint name="arm_wrist_left_yaw" />
-        <chain base_link="arm_shoulder_left_joint" tip_link="arm_hand_left" />
+        <chain base_link="arm_shoulder_left_joint" tip_link="arm_lower_left" />
     </group>
     <group name="arm_right">
         <link name="arm_shoulder_right_joint" />
         <link name="arm_upper_right" />
         <link name="arm_elbow_right_joint" />
         <link name="arm_lower_right" />
-        <link name="arm_hand_right" />
         <joint name="arm_shoulder_right_roll" />
         <joint name="arm_shoulder_right_pitch" />
         <joint name="arm_elbow_right_yaw" />
         <joint name="arm_elbow_right_roll" />
-        <joint name="arm_wrist_right_yaw" />
-        <chain base_link="arm_shoulder_right_joint" tip_link="arm_hand_right" />
+        <chain base_link="arm_shoulder_right_joint" tip_link="arm_lower_right" />
     </group>
-    <group name="head">
+    <group name="gripper_right">
+        <link name="arm_hand_right" />
+        <joint name="arm_wrist_left_yaw" />
+    </group>
+    <group name="gripper_left">
+        <link name="arm_hand_left" />
+        <joint name="arm_wrist_left_yaw" />
+    </group>
+    <group name="tip_head">
         <link name="head" />
-        <link name="neck" />
-        <link name="neckjoint" />
-        <joint name="head_roll" />
         <joint name="head_yaw" />
-        <chain base_link="neck" tip_link="head" />
+        <joint name="head_roll" />
     </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
-    <group_state name="arm_left_normal" group="arm_left">
+    <group_state name="arm_left_initial" group="arm_left">
         <joint name="arm_elbow_left_roll" value="0" />
         <joint name="arm_elbow_left_yaw" value="0" />
         <joint name="arm_shoulder_left_pitch" value="0" />
         <joint name="arm_shoulder_left_roll" value="0" />
-        <joint name="arm_wrist_left_yaw" value="0" />
     </group_state>
-    <group_state name="arm_right_normal" group="arm_right">
+    <group_state name="arm_right_initial" group="arm_right">
         <joint name="arm_elbow_right_roll" value="0" />
         <joint name="arm_elbow_right_yaw" value="0" />
         <joint name="arm_shoulder_right_pitch" value="0" />
         <joint name="arm_shoulder_right_roll" value="0" />
-        <joint name="arm_wrist_right_yaw" value="0" />
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="headeffector" parent_link="neck" group="head" />
+    <end_effector name="hand_right" parent_link="arm_lower_right" group="gripper_right" parent_group="arm_right" />
+    <end_effector name="hand_left" parent_link="arm_lower_left" group="gripper_left" parent_group="arm_left" />
+    <end_effector name="head" parent_link="neck" group="tip_head" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
-    <disable_collisions link1="arm_hand_left" link2="arm_hand_right" reason="Never" />
     <disable_collisions link1="arm_hand_left" link2="arm_lower_left" reason="Adjacent" />
     <disable_collisions link1="arm_hand_left" link2="arm_upper_right" reason="Never" />
     <disable_collisions link1="arm_hand_left" link2="foot_left" reason="Never" />
     <disable_collisions link1="arm_hand_left" link2="foot_right" reason="Never" />
     <disable_collisions link1="arm_hand_left" link2="leg_lower_left" reason="Never" />
     <disable_collisions link1="arm_hand_left" link2="leg_lower_right" reason="Never" />
-    <disable_collisions link1="arm_hand_left" link2="leg_upper_left" reason="Never" />
     <disable_collisions link1="arm_hand_left" link2="leg_upper_right" reason="Never" />
-    <disable_collisions link1="arm_hand_right" link2="arm_lower_left" reason="Never" />
     <disable_collisions link1="arm_hand_right" link2="arm_lower_right" reason="Adjacent" />
     <disable_collisions link1="arm_hand_right" link2="arm_upper_left" reason="Never" />
     <disable_collisions link1="arm_hand_right" link2="foot_left" reason="Never" />
     <disable_collisions link1="arm_hand_right" link2="foot_right" reason="Never" />
     <disable_collisions link1="arm_hand_right" link2="leg_lower_left" reason="Never" />
     <disable_collisions link1="arm_hand_right" link2="leg_lower_right" reason="Never" />
-    <disable_collisions link1="arm_lower_left" link2="arm_lower_right" reason="Never" />
     <disable_collisions link1="arm_lower_left" link2="arm_upper_left" reason="Adjacent" />
     <disable_collisions link1="arm_lower_left" link2="arm_upper_right" reason="Never" />
     <disable_collisions link1="arm_lower_left" link2="foot_left" reason="Never" />
