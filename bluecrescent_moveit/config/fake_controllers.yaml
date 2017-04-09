@@ -20,5 +20,7 @@ controller_list:
       - arm_wrist_left_yaw
   - name: fake_tip_head_controller
     joints:
-      - head_yaw
       - head_roll
+  - name: fake_head_controller
+    joints:
+      - head_yaw

@@ -1,6 +1,6 @@
 <launch>
   <rosparam>
-    trobo:
+    bluecrescent:
       # Publish all joint states -----------------------------------
       joint_state_controller:
         type: joint_state_controller/JointStateController
@@ -14,21 +14,21 @@
           - joint1
   </rosparam>
 
-  <node name="trobo_control" pkg="trobo_control" type="trobo_control" 
-        output="screen" ns="/trobo"/>
+  <node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_control" 
+        output="screen" ns="/bluecrescent"/>
 
   <node name="controller_spawner" pkg="controller_manager" 
         type="spawner" respawn="false"
-	output="screen" ns="/trobo" 
+	output="screen" ns="/bluecrescent" 
         args="joint_state_controller joint1_position_controller"/> 
 
   <node name="joint_state_publisher" pkg="joint_state_publisher" 
 	  type="joint_state_publisher" respawn="false" output="screen">
-	<rosparam param="/source_list">[/trobo/joint_states]</rosparam>
+	<rosparam param="/source_list">[/bluecrescent/joint_states]</rosparam>
   </node>
   <node name="robot_state_publisher" pkg="robot_state_publisher" 
 	  type="robot_state_publisher" respawn="false" output="screen">
-	<remap from="/joint_states" to="/trobo/joint_states" />
+	<remap from="/joint_states" to="/bluecrescent/joint_states" />
   </node>
 
 </launch>
