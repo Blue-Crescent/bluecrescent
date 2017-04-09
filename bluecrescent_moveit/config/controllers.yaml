@@ -1,0 +1,20 @@
+controller_manager_ns: controller_manager
+controller_list:
+  - name: bluecrescent/joint_position_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - head_roll
+      - head_yaw
+      - arm_shoulder_right_roll
+      - arm_shoulder_right_pitch
+      - arm_elbow_right_yaw
+      - arm_elbow_right_roll
+      - arm_wrist_right_yaw
+      - arm_shoulder_left_roll
+      - arm_shoulder_left_pitch
+      - arm_elbow_left_yaw
+      - arm_elbow_left_roll
+      - arm_wrist_left_yaw
+  

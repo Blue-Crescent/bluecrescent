@@ -13,14 +13,11 @@ controller_list:
       - arm_elbow_right_roll
   - name: fake_gripper_right_controller
     joints:
-      - arm_wrist_left_yaw
       - arm_wrist_right_yaw
   - name: fake_gripper_left_controller
     joints:
       - arm_wrist_left_yaw
-  - name: fake_tip_head_controller
-    joints:
-      - head_roll
   - name: fake_head_controller
     joints:
       - head_yaw
+      - head_roll
