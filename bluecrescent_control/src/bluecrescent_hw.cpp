@@ -31,14 +31,14 @@
 
 
 #define PI 3.141592653589
-#define PI_step 360
-// Steps for 1 period loop
-#define STEP_N (360/(18/2))
-// Degree of 1 step
-#define DSTEP 9
+//FULL
+//#define PI_step 500
+//HALF
+#define PI_step 1000
 
 // 8830 Register
-#define VSET (0x26 << 2)
+//#define VSET (0x26 << 2)
+#define VSET (0x30<< 2)
 #define CONTROL 0x0
 #define FAULT 0x1
 
@@ -96,7 +96,6 @@ int fd_mux,fd_M0[2],fd_M1[2];
 
 
 void motor_release(){
-	printf("MOTOR RELEASE!\n");
 	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,0x18);
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,0x18);
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,0x18);
@@ -118,7 +117,6 @@ void cwstep(uint8_t num){
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
-	stepcnt[num]++;
 }
 void ccwstep(uint8_t num){
 	rrotate(step[num].A);
@@ -129,11 +127,11 @@ void ccwstep(uint8_t num){
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
-	stepcnt[num]--;
 }
 // Replacement SIGINT handler
 void mySigIntHandler(int sig)
 {
+  motor_release();
   printf("Motor Stopped!\n");
   ROS_WARN("Shutdown request received. Motor Stopping. Driver Released!");
 }
@@ -148,8 +146,8 @@ BlueCrescent::BlueCrescent()
 
   fd_M0[0] = wiringPiI2CSetup(drv8830_addr_M0[0]);
   fd_M0[1] = wiringPiI2CSetup(drv8830_addr_M0[1]);
-  fd_M1[2] = wiringPiI2CSetup(drv8830_addr_M1[0]);
-  fd_M1[3] = wiringPiI2CSetup(drv8830_addr_M1[1]);
+  fd_M1[0] = wiringPiI2CSetup(drv8830_addr_M1[0]);
+  fd_M1[1] = wiringPiI2CSetup(drv8830_addr_M1[1]);
 
 
   hardware_interface::JointStateHandle state_handle_head_roll("head_roll", &head_pos_[ROLL], &head_vel_[ROLL], &head_eff_[ROLL]);
@@ -186,13 +184,21 @@ void BlueCrescent::write(ros::Time time, ros::Duration period)
 
   if(stepcnt[ROLL]<head_step_cmd_[ROLL]){
   	cwstep(ROLL);
+	stepcnt[ROLL]++;
   }else if(stepcnt[ROLL]>head_step_cmd_[ROLL]){
  	ccwstep(ROLL);
+	stepcnt[ROLL]--;
+  }else{
+	  //////motor_release();
   }
   if(stepcnt[YAW]<head_step_cmd_[YAW]){
-  	cwstep(YAW);
-  }else if(stepcnt[YAW]>head_step_cmd_[YAW]){
  	ccwstep(YAW);
+	stepcnt[YAW]++;
+  }else if(stepcnt[YAW]>head_step_cmd_[YAW]){
+  	cwstep(YAW);
+	stepcnt[YAW]--;
+  }else{
+	  //motor_release();
   }
 
   printstep(ROLL);

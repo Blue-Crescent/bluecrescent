@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-enum ROTATION {ROLL=0,PITCH,YAW};
+enum ROTATION {ROLL=1,PITCH=2,YAW=0};
 enum ARM {SHOULDER=0,ELBOW,WRIST};
 enum SIDE {LEFT=0,RIGHT};
 
