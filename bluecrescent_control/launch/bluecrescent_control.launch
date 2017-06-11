@@ -36,7 +36,7 @@
   </rosparam>
 
   <node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_control" 
-        output="screen" ns="/bluecrescent"/>
+        output="screen" ns="/bluecrescent" launch-prefix="sudo -E"/>
 
 
 </launch>

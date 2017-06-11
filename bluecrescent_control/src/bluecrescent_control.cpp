@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
   BlueCrescent bluecrescent;
   controller_manager::ControllerManager cm(&bluecrescent, nh);
 
-  ros::Rate rate(1.0 / bluecrescent.getPeriod().toSec());
-  ros::AsyncSpinner spinner(1);
+  ros::Rate rate(200.0 / bluecrescent.getPeriod().toSec());
+  ros::AsyncSpinner spinner(10);
   spinner.start();
 
   while(ros::ok())

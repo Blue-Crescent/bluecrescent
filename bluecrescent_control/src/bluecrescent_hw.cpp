@@ -92,26 +92,26 @@ motorstep step[4] = {
 int stepcnt[4] = {0,0,0,0};
 unsigned const char drv8830_addr[2] = {0x60,0x61};
 unsigned const char drv8830_addr_M1[2] = {0x62,0x63};
-int fd[2];
+int fd_mux,fd[2];
 
 
 void motor_release(){
 	printf("MOTOR RELEASE!\n");
-	wiringPiI2CWriteReg8(fd[0],CONTROL,0x18);
-	wiringPiI2CWriteReg8(fd[1],CONTROL,0x18);
+	//wiringPiI2CWriteReg8(fd[0],CONTROL,0x18);
+	//wiringPiI2CWriteReg8(fd[1],CONTROL,0x18);
 }
 void motor_lock(uint8_t num){
 	printf("MOTOR LOCKED!\n");
-	wiringPiI2CWriteReg8(fd[0],CONTROL,A(num));
-	wiringPiI2CWriteReg8(fd[1],CONTROL,B(num));
+	//wiringPiI2CWriteReg8(fd[0],CONTROL,A(num));
+	//wiringPiI2CWriteReg8(fd[1],CONTROL,B(num));
 }
 void cwstep(uint8_t num){
 	lrotate(step[num].A);
 	lrotate(step[num].nA);
 	lrotate(step[num].B);
 	lrotate(step[num].nB);
-	wiringPiI2CWriteReg8(fd[0],CONTROL,A(num));
-	wiringPiI2CWriteReg8(fd[1],CONTROL,B(num));
+	//wiringPiI2CWriteReg8(fd[0],CONTROL,A(num));
+	//wiringPiI2CWriteReg8(fd[1],CONTROL,B(num));
 	stepcnt[num]++;
 }
 void ccwstep(uint8_t num){
@@ -119,8 +119,8 @@ void ccwstep(uint8_t num){
 	rrotate(step[num].nA);
 	rrotate(step[num].B);
 	rrotate(step[num].nB);
-	wiringPiI2CWriteReg8(fd[0],CONTROL,A(num));
-	wiringPiI2CWriteReg8(fd[1],CONTROL,B(num));
+	//wiringPiI2CWriteReg8(fd[0],CONTROL,A(num));
+	//wiringPiI2CWriteReg8(fd[1],CONTROL,B(num));
 	stepcnt[num]--;
 }
 // Replacement SIGINT handler
@@ -135,8 +135,12 @@ BlueCrescent::BlueCrescent()
   // connect and register the joint state interface
   signal(SIGINT, mySigIntHandler);
 
+  //fd_mux = wiringPiI2CSetup(0x70);
+  //wiringPiI2CWriteReg8(fd_mux, 0x0 ,0x04);
+
   //fd[0] = wiringPiI2CSetup(drv8830_addr[0]);
   //fd[1] = wiringPiI2CSetup(drv8830_addr[1]);
+
 
   hardware_interface::JointStateHandle state_handle_head_roll("head_roll", &head_pos_[ROLL], &head_vel_[ROLL], &head_eff_[ROLL]);
   jnt_state_interface.registerHandle(state_handle_head_roll);
@@ -181,59 +185,17 @@ void BlueCrescent::write(ros::Time time, ros::Duration period)
  	ccwstep(YAW);
   }
 
-  printstep(ROLL);
-  printstep(YAW);
+  //printstep(ROLL);
+  //printstep(YAW);
 
   head_pos_[ROLL] =(int) stepcnt[ROLL] * PI / PI_step;
   head_pos_[YAW] =(int) stepcnt[YAW] * PI / PI_step;
 
 //ROS_DEBUG_STREAM("Debug:" << pos_[0] << cmd_[0]);
   // Dump cmd_ from MoveIt!, current simulated real robot pos_.
-  printf("%lf,%lf,%d,%d\n",head_pos_[ROLL],head_cmd_[ROLL],stepcnt[ROLL],head_step_cmd_[ROLL]);
+  //printf("%lf,%lf,%d,%d ",head_pos_[ROLL],head_cmd_[ROLL],stepcnt[ROLL],head_step_cmd_[ROLL]);
   printf("%lf,%lf,%d,%d\n",head_pos_[YAW],head_cmd_[YAW],stepcnt[YAW],head_step_cmd_[YAW]);
   
   //head_pos_[ROLL] = head_cmd_[ROLL];// + 0.01*(head_cmd_[ROLL] - head_pos_[ROLL]);
   //head_pos_[YAW] = head_cmd_[YAW];// + 0.01*(head_cmd_[YAW] - head_pos_[YAW]);
 }
-
-
-// int main(void){
-// 	int c;
-// 	ts.tv_sec = 5;
-// 	ts.tv_nsec = 0;
-// 
-//         /* WHO AM I */
-//         fd[0] = wiringPiI2CSetup(drv8830_addr[0]);
-//         fd[1] = wiringPiI2CSetup(drv8830_addr[1]);
-// 
-// 	// Ctrl+C Abort
-// 	if(SIG_ERR== signal(SIGINT,sigcatch))
-// 		return 1;
-// 	// Key Scan
-// 	tcgetattr(STDIN_FILENO, &CookedTermIos);
-// 	RawTermIos = CookedTermIos;
-// 	cfmakeraw(&RawTermIos);
-// 	tcsetattr(STDIN_FILENO, 0, &RawTermIos);
-// 
-// 	//printf( "Motor running during push");
-// 	//clock_nanosleep(CLOCK_REALTIME, 0, &ts, NULL);
-// 	//printf( " 8:up 2:down 5:lock 1:motor1 3:motor2 anynum:release char:exit");
-// 	
-// 	while((c = getchar()) != QUIT_CHAR) {
-// 	//if(isprint(c)) {
-// 		//	putchar(c);
-// 			switch(c){
-// 				case '8':
-// 					cwstep(0);
-// 					printstep(0);
-// 			}
-// 
-// 	//	} else {
-// 	//		printf("<%02X>", c);
-// 	//	}
-// 	}
-// 
-// 
-// 	tcsetattr(STDIN_FILENO, 0, &CookedTermIos);
-// 	return 0;
-// }
