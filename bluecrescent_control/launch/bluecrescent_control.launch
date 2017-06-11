@@ -4,7 +4,7 @@
       # Publish all joint states -----------------------------------
       joint_state_controller:
         type: joint_state_controller/JointStateController
-        publish_rate: 10
+        publish_rate: 1.0
   
       # Position Controllers ---------------------------------------
       joint_position_controller:
@@ -36,7 +36,7 @@
   </rosparam>
 
   <node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_control" 
-        output="screen" ns="/bluecrescent" launch-prefix="sudo -E"/>
+        output="screen" ns="/bluecrescent" launch-prefix="sudo -E -S"/>
 
 
 </launch>
