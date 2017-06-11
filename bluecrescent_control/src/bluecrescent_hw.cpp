@@ -90,28 +90,34 @@ motorstep step[4] = {
 };
 
 int stepcnt[4] = {0,0,0,0};
-unsigned const char drv8830_addr[2] = {0x60,0x61};
+unsigned const char drv8830_addr_M0[2] = {0x60,0x61};
 unsigned const char drv8830_addr_M1[2] = {0x62,0x63};
-int fd_mux,fd[2];
+int fd_mux,fd_M0[2],fd_M1[2];
 
 
 void motor_release(){
 	printf("MOTOR RELEASE!\n");
-	//wiringPiI2CWriteReg8(fd[0],CONTROL,0x18);
-	//wiringPiI2CWriteReg8(fd[1],CONTROL,0x18);
+	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,0x18);
+	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,0x18);
+	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,0x18);
+	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,0x18);
 }
 void motor_lock(uint8_t num){
 	printf("MOTOR LOCKED!\n");
-	//wiringPiI2CWriteReg8(fd[0],CONTROL,A(num));
-	//wiringPiI2CWriteReg8(fd[1],CONTROL,B(num));
+	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,A(num));
+	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
+	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
+	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
 }
 void cwstep(uint8_t num){
 	lrotate(step[num].A);
 	lrotate(step[num].nA);
 	lrotate(step[num].B);
 	lrotate(step[num].nB);
-	//wiringPiI2CWriteReg8(fd[0],CONTROL,A(num));
-	//wiringPiI2CWriteReg8(fd[1],CONTROL,B(num));
+	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,A(num));
+	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
+	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
+	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
 	stepcnt[num]++;
 }
 void ccwstep(uint8_t num){
@@ -119,8 +125,10 @@ void ccwstep(uint8_t num){
 	rrotate(step[num].nA);
 	rrotate(step[num].B);
 	rrotate(step[num].nB);
-	//wiringPiI2CWriteReg8(fd[0],CONTROL,A(num));
-	//wiringPiI2CWriteReg8(fd[1],CONTROL,B(num));
+	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,A(num));
+	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
+	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
+	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
 	stepcnt[num]--;
 }
 // Replacement SIGINT handler
@@ -135,11 +143,13 @@ BlueCrescent::BlueCrescent()
   // connect and register the joint state interface
   signal(SIGINT, mySigIntHandler);
 
-  //fd_mux = wiringPiI2CSetup(0x70);
-  //wiringPiI2CWriteReg8(fd_mux, 0x0 ,0x04);
+  fd_mux = wiringPiI2CSetup(0x70);
+  wiringPiI2CWriteReg8(fd_mux, 0x0 ,0x04);
 
-  //fd[0] = wiringPiI2CSetup(drv8830_addr[0]);
-  //fd[1] = wiringPiI2CSetup(drv8830_addr[1]);
+  fd_M0[0] = wiringPiI2CSetup(drv8830_addr_M0[0]);
+  fd_M0[1] = wiringPiI2CSetup(drv8830_addr_M0[1]);
+  fd_M1[2] = wiringPiI2CSetup(drv8830_addr_M1[0]);
+  fd_M1[3] = wiringPiI2CSetup(drv8830_addr_M1[1]);
 
 
   hardware_interface::JointStateHandle state_handle_head_roll("head_roll", &head_pos_[ROLL], &head_vel_[ROLL], &head_eff_[ROLL]);
