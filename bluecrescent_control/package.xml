@@ -4,11 +4,11 @@
   <version>0.0.0</version>
   <description>The bluecrescent_control package</description>
 
-  <maintainer email="ick40195+ros@gmail.org">Kenta Yonekura</maintainer>
+  <maintainer email="ick40195+ros@gmail.org">BlueCrescent</maintainer>
 
   <license>BSD</license>
 
-  <author email="ick40195@gmail.com">Dave Coleman</author>
+  <author email="ick40195@gmail.com">BlueCrescent</author>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
