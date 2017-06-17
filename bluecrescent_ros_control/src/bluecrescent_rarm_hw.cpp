@@ -5,14 +5,11 @@
 #include <iostream> // for debug
 #include <math.h>
 
-namespace combined_robot_hw_tests
+namespace bluecrescent_ros_control 
+{
+bluecrescent_rarm_hw::bluecrescent_rarm_hw()
 {
 
-BlueCrescent::BlueCrescent()
-{
-}
-
-bool BlueCrescent::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh){
   // connect and register the joint state interface
   // ARM right
   
@@ -49,14 +46,13 @@ bool BlueCrescent::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh){
   registerInterface(&jnt_state_interface);
   registerInterface(&jnt_pos_interface);
 
-	return true;
-
 }
-void BlueCrescent::read(const ros::Time& time,const ros::Duration& period)
+
+void bluecrescent_rarm_hw::read(const ros::Time& time,const ros::Duration& period)
 {
 }
 
-void BlueCrescent::write(const ros::Time& time,const ros::Duration& period)
+void bluecrescent_rarm_hw::write(const ros::Time& time,const ros::Duration& period)
 {
  
   // Real Robot functionality coding here...
@@ -69,4 +65,3 @@ void BlueCrescent::write(const ros::Time& time,const ros::Duration& period)
   printf("%lf,%lf\n",head_pos_[ROLL],head_cmd_[ROLL]);
 }
 }
-

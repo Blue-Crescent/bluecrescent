@@ -12,8 +12,6 @@ int main(int argc, char *argv[])
 
   ros::NodeHandle nh;
   combined_robot_hw::CombinedRobotHW hw;
-  bool init_success = hw.init(nh, nh);
-
   controller_manager::ControllerManager cm(&hw, nh);
 
   ros::AsyncSpinner spinner(1);// Hz

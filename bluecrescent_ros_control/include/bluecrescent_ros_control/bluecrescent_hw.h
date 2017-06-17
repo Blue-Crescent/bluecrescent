@@ -10,17 +10,16 @@ enum ROTATION {ROLL=0,PITCH,YAW};
 enum ARM {SHOULDER=0,ELBOW,WRIST};
 enum SIDE {LEFT=0,RIGHT};
 
-namespace combined_robot_hw_tests
+namespace bluecrescent_ros_control
 {
-class BlueCrescent : public hardware_interface::RobotHW
+class bluecrescent_rarm_hw : public hardware_interface::RobotHW
 {
 public:
-  BlueCrescent();
+  bluecrescent_rarm_hw();
 
   //ros::Time getTime() const { return ros::Time::now(); }
   //ros::Duration getPeriod() const { return ros::Duration(0.01); }
 
-  virtual bool init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh);
   virtual void read(const ros::Time& time, const ros::Duration& period);
   virtual void write(const ros::Time& time, const ros::Duration& period);
 
