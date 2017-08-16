@@ -29,7 +29,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(bluecrescent_ros_control src/bluecrescent_ros_control.cpp src/bluecrescent_rarm_hw.cpp)
+add_executable(bluecrescent_ros_control src/bluecrescent_ros_control.cpp src/bluecrescent_rarm_hw.cpp src/bluecrescent_head_hw.cpp)
 add_dependencies(bluecrescent_ros_control wiringPi)
 
 target_link_libraries(bluecrescent_ros_control

@@ -6,6 +6,7 @@ FIND_LIBRARY(WIRINGPI_LIBRARY wiringPi /usr/local/lib)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  combined_robot_hw
   hardware_interface
   transmission_interface
   controller_manager
@@ -28,7 +29,13 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(bluecrescent_control src/bluecrescent_control.cpp src/bluecrescent_hw.cpp)
+add_executable(bluecrescent_control 
+	src/bluecrescent_control.cpp
+       	src/bluecrescent_hw_head.cpp
+	src/bluecrescent_hw_rarm.cpp
+	#       	src/bluecrescent_hw_larm.cpp
+	
+	)
 add_dependencies(bluecrescent_control wiringPi)
 
 target_link_libraries(bluecrescent_control

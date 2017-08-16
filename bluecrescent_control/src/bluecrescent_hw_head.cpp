@@ -17,7 +17,7 @@
 #include <ros/package.h>
 #include <ros/xmlrpc_manager.h>
 #include <angles/angles.h>
-#include <bluecrescent_control/bluecrescent_hw.h>
+#include <bluecrescent_control/bluecrescent_hw_head.h>
 #include <iostream> // for debug
 #include <math.h>
 
@@ -42,9 +42,12 @@
 #define CONTROL 0x0
 #define FAULT 0x1
 
+
+namespace combined_robot_hw_tests{
 struct termios CookedTermIos;
 struct termios RawTermIos;
 struct timespec ts;
+
 
 // DRV8830 drvreg Register for phase A,B
 typedef struct 
@@ -95,20 +98,20 @@ unsigned const char drv8830_addr_M1[2] = {0x62,0x63};
 int fd_mux,fd_M0[2],fd_M1[2];
 
 
-void motor_release(){
+void BlueCrescent_head::motor_release(){
 	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,0x18);
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,0x18);
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,0x18);
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,0x18);
 }
-void motor_lock(uint8_t num){
+void BlueCrescent_head::motor_lock(uint8_t num){
 	printf("MOTOR LOCKED!\n");
 	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
 }
-void cwstep(uint8_t num){
+void BlueCrescent_head::cwstep(uint8_t num){
 	lrotate(step[num].A);
 	lrotate(step[num].nA);
 	lrotate(step[num].B);
@@ -118,7 +121,7 @@ void cwstep(uint8_t num){
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
 }
-void ccwstep(uint8_t num){
+void BlueCrescent_head::ccwstep(uint8_t num){
 	rrotate(step[num].A);
 	rrotate(step[num].nA);
 	rrotate(step[num].B);
@@ -129,74 +132,43 @@ void ccwstep(uint8_t num){
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
 }
 // Replacement SIGINT handler
-void mySigIntHandler(int sig)
-{
-  motor_release();
-  printf("Motor Stopped!\n");
-  ROS_WARN("Shutdown request received. Motor Stopping. Driver Released!");
-}
-
-BlueCrescent::BlueCrescent()
-{
-  // connect and register the joint state interface
-  signal(SIGINT, mySigIntHandler);
-
-  fd_mux = wiringPiI2CSetup(0x70);
-  wiringPiI2CWriteReg8(fd_mux, 0x0 ,0x04);
-
-  fd_M0[0] = wiringPiI2CSetup(drv8830_addr_M0[0]);
-  fd_M0[1] = wiringPiI2CSetup(drv8830_addr_M0[1]);
-  fd_M1[0] = wiringPiI2CSetup(drv8830_addr_M1[0]);
-  fd_M1[1] = wiringPiI2CSetup(drv8830_addr_M1[1]);
+//void mySigIntHandler(int sig)
+//{
+//  motor_release();
+//  printf("Motor Stopped!\n");
+//  ROS_WARN("Shutdown request received. Motor Stopping. Driver Released!");
+//}
 
 
-  hardware_interface::JointStateHandle state_handle_head_roll("head_roll", &head_pos_[ROLL], &head_vel_[ROLL], &head_eff_[ROLL]);
-  jnt_state_interface.registerHandle(state_handle_head_roll);
-
-  hardware_interface::JointHandle pos_handle_head_roll(jnt_state_interface.getHandle("head_roll"), &head_cmd_[ROLL]);
-  jnt_pos_interface.registerHandle(pos_handle_head_roll);
-  
-  hardware_interface::JointStateHandle state_handle_head_yaw("head_yaw", &head_pos_[YAW], &head_vel_[YAW], &head_eff_[YAW]);
-  jnt_state_interface.registerHandle(state_handle_head_yaw);
-
-  hardware_interface::JointHandle pos_handle_head_yaw(jnt_state_interface.getHandle("head_yaw"), &head_cmd_[YAW]);
-  jnt_pos_interface.registerHandle(pos_handle_head_yaw);
-
-  
-  registerInterface(&jnt_state_interface);
-  registerInterface(&jnt_pos_interface);
-
-}
-
-void BlueCrescent::read(ros::Time time, ros::Duration period)
+void BlueCrescent_head::read(ros::Time time, ros::Duration period)
 {
 }
 
-void BlueCrescent::write(ros::Time time, ros::Duration period)
+void BlueCrescent_head::write(ros::Time time, ros::Duration period)
 {
   // Real Robot functionality coding here...
   // below code is simulating real robot delay.	
 
   int head_step_cmd_[4];
 
-  head_step_cmd_[ROLL] =(int) (PI_step * head_cmd_[ROLL]/PI);
-  head_step_cmd_[YAW] =(int) (PI_step * head_cmd_[YAW]/PI);
+  head_step_cmd_[ROLL] =(int) (PI_step * combined_robot_hw_tests::head_cmd_[ROLL]/PI);
+  head_step_cmd_[YAW] =(int) (PI_step * combined_robot_hw_tests::head_cmd_[YAW]/PI);
 
-  if(stepcnt[ROLL]<head_step_cmd_[ROLL]){
+  if(combined_robot_hw_tests::stepcnt[ROLL]<head_step_cmd_[ROLL]){
   	cwstep(ROLL);
-	stepcnt[ROLL]++;
-  }else if(stepcnt[ROLL]>head_step_cmd_[ROLL]){
+	combined_robot_hw_tests::stepcnt[ROLL]++;
+  }else if(combined_robot_hw_tests::stepcnt[ROLL]>head_step_cmd_[ROLL]){
  	ccwstep(ROLL);
-	stepcnt[ROLL]--;
+	combined_robot_hw_tests::stepcnt[ROLL]--;
   }else{
 	  //////motor_release();
   }
-  if(stepcnt[YAW]<head_step_cmd_[YAW]){
+  if(combined_robot_hw_tests::stepcnt[YAW]<head_step_cmd_[YAW]){
  	ccwstep(YAW);
-	stepcnt[YAW]++;
-  }else if(stepcnt[YAW]>head_step_cmd_[YAW]){
+	combined_robot_hw_tests::stepcnt[YAW]++;
+  }else if(combined_robot_hw_tests::stepcnt[YAW]>head_step_cmd_[YAW]){
   	cwstep(YAW);
-	stepcnt[YAW]--;
+	combined_robot_hw_tests::stepcnt[YAW]--;
   }else{
 	  //motor_release();
   }
@@ -204,14 +176,15 @@ void BlueCrescent::write(ros::Time time, ros::Duration period)
   printstep(ROLL);
   printstep(YAW);
 
-  head_pos_[ROLL] =(int) stepcnt[ROLL] * PI / PI_step;
-  head_pos_[YAW] =(int) stepcnt[YAW] * PI / PI_step;
+  combined_robot_hw_tests::head_pos_[ROLL] =(int) combined_robot_hw_tests::stepcnt[ROLL] * PI / PI_step;
+  combined_robot_hw_tests::head_pos_[YAW] =(int) combined_robot_hw_tests::stepcnt[YAW] * PI / PI_step;
 
 //ROS_DEBUG_STREAM("Debug:" << pos_[0] << cmd_[0]);
   // Dump cmd_ from MoveIt!, current simulated real robot pos_.
-  printf("%lf,%lf,%d,%d ",head_pos_[ROLL],head_cmd_[ROLL],stepcnt[ROLL],head_step_cmd_[ROLL]);
-  printf("%lf,%lf,%d,%d\n",head_pos_[YAW],head_cmd_[YAW],stepcnt[YAW],head_step_cmd_[YAW]);
+  printf("%lf,%lf,%d,%d ",combined_robot_hw_tests::head_pos_[ROLL],combined_robot_hw_tests::head_cmd_[ROLL],combined_robot_hw_tests::stepcnt[ROLL],head_step_cmd_[ROLL]);
+  printf("%lf,%lf,%d,%d\n",combined_robot_hw_tests::head_pos_[YAW],combined_robot_hw_tests::head_cmd_[YAW],combined_robot_hw_tests::stepcnt[YAW],head_step_cmd_[YAW]);
   
-  //head_pos_[ROLL] = head_cmd_[ROLL];// + 0.01*(head_cmd_[ROLL] - head_pos_[ROLL]);
-  //head_pos_[YAW] = head_cmd_[YAW];// + 0.01*(head_cmd_[YAW] - head_pos_[YAW]);
+  //combined_robot_hw_tests::head_pos_[ROLL] = combined_robot_hw_tests::head_cmd_[ROLL];// + 0.01*(combined_robot_hw_tests::head_cmd_[ROLL] - combined_robot_hw_tests::head_pos_[ROLL]);
+  //combined_robot_hw_tests::head_pos_[YAW] = combined_robot_hw_tests::head_cmd_[YAW];// + 0.01*(combined_robot_hw_tests::head_cmd_[YAW] - combined_robot_hw_tests::head_pos_[YAW]);
+}
 }

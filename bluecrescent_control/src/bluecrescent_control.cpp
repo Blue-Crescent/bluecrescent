@@ -1,30 +1,31 @@
 #include <ros/ros.h>
 #include <ros/time.h>
 #include <controller_manager/controller_manager.h>
-#include <bluecrescent_control/bluecrescent_hw.h>
+#include <combined_robot_hw/combined_robot_hw.h>
+// #include <bluecrescent_control/bluecrescent_hw.h>
 
 int main(int argc, char *argv[])
 {
   ros::init(argc, argv, "bluecrescent");
-  ros::NodeHandle nh;
 
-  BlueCrescent bluecrescent;
-  controller_manager::ControllerManager cm(&bluecrescent, nh);
+  //BlueCrescent bluecrescent;
 
-  ros::Rate rate(50.0); //Hz / bluecrescent.getPeriod().toSec());
   ros::AsyncSpinner spinner(1);// Hz
   spinner.start();
 
+  ros::NodeHandle nh;
+  combined_robot_hw::CombinedRobotHW hw;
+  bool init_success = hw.init(nh, nh);
+  
+  controller_manager::ControllerManager cm(&hw, nh);
+
+  ros::Duration period(1.0);
   while(ros::ok())
   {
-    ros::Time now = bluecrescent.getTime();
-    ros::Duration dt = bluecrescent.getPeriod();
-
-    bluecrescent.read(now, dt);
-    cm.update(now, dt);
-
-    bluecrescent.write(now, dt);
-    rate.sleep();
+    hw.read(ros::Time::now(), period);
+    cm.update(ros::Time::now(), period);
+    hw.write(ros::Time::now(), period);
+    period.sleep();
   }
   spinner.stop();
 

@@ -1,17 +1,58 @@
 <launch>
    <rosparam>
-     robot_hardware:
-     - bluecrescent_ros_control
-     bluecrescent_ros_control:
-       type: bluecrescent_ros_control/bluecrescent_rarm_hw
+    # robot_hardware:
+    # - bluecrescent_head_hw
+    # - bluecrescent_rarm_hw
+    # bluecrescent_head_hw:
+    #   type: bluecrescent_ros_control/bluecrescent_head_hw
+    # bluecrescent_rarm_hw:
+    #   type: bluecrescent_ros_control/bluecrescent_rarm_hw
    </rosparam> 
+  <rosparam>
+ #   bluecrescent:
+ #     # Publish all joint states -----------------------------------
+ #     joint_state_controller:
+ #       type: joint_state_controller/JointStateController
+ #       publish_rate: 10.0
+ # 
+ #     # Position Controllers ---------------------------------------
+ #     joint_position_controller_head:
+ #       type: position_controllers/JointTrajectoryController
+ #       pid: {p: 10.0, i: 0.0, d: 0.0}
+ #       joints: 
+ #         - head_roll
+ #         - head_yaw
+ #     # Position Controllers ---------------------------------------
+ #     joint_position_controller_rarm:
+ #       type: position_controllers/JointTrajectoryController
+ #       pid: {p: 10.0, i: 0.0, d: 0.0}
+ #       joints: 
+ #         - arm_shoulder_right_roll
+ #         - arm_shoulder_right_pitch
+ #         - arm_elbow_right_yaw
+ #         - arm_elbow_right_roll
+ #         - arm_wrist_right_yaw
+ #     ## Position Controllers ---------------------------------------
+ #     #joint_position_controller:
+ #     #  type: position_controllers/JointTrajectoryController
+ #     #  pid: {p: 10.0, i: 0.0, d: 0.0}
+ #     #  joints: 
+ #     #    - arm_shoulder_left_roll
+ #     #    - arm_shoulder_left_pitch
+ #     #    - arm_elbow_left_yaw
+ #     #    - arm_elbow_left_roll
+ #     #    - arm_wrist_left_yaw
+  </rosparam>
+
   
 
-   <node name="bluecrescent_control" pkg="bluecrescent_ros_control" type="bluecrescent_ros_control" />
+  <node name="bluecrescent_control" pkg="bluecrescent_ros_control" type="bluecrescent_ros_control"/>
 
     
-  <!-- Load the URDF into the ROS Parameter Server -->
+  <!-- Load the URDF into the ROS Parameter Server
 
+  ns="/bluecrescent"/>
+       -->
   <!-- ros_control rrbot launch file -->
 
 </launch>

@@ -1,7 +1,7 @@
 #include <ros/ros.h>
 #include <ros/package.h>
 #include <angles/angles.h>
-#include <bluecrescent_ros_control/bluecrescent_hw.h>
+#include <bluecrescent_ros_control/bluecrescent_rarm_hw.h>
 #include <iostream> // for debug
 #include <math.h>
 
@@ -47,6 +47,10 @@ bluecrescent_rarm_hw::bluecrescent_rarm_hw()
   registerInterface(&jnt_pos_interface);
 
 }
+bool  bluecrescent_rarm_hw::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
+{
+	return true;
+}
 
 void bluecrescent_rarm_hw::read(const ros::Time& time,const ros::Duration& period)
 {
@@ -58,10 +62,10 @@ void bluecrescent_rarm_hw::write(const ros::Time& time,const ros::Duration& peri
   // Real Robot functionality coding here...
   // below code is simulating real robot delay.	
   //pos_[0] = pos_[0] + 0.01* (cmd_[0] - pos_[0]);
-  head_pos_[ROLL] = head_cmd_[ROLL];// + 0.01*(head_cmd_[ROLL] - head_pos_[ROLL]);
-  head_pos_[YAW] = head_cmd_[YAW];// + 0.01*(head_cmd_[YAW] - head_pos_[YAW]);
-  //ROS_DEBUG_STREAM("Debug:" << pos_[0] << cmd_[0]);
-  // Dump cmd_ from MoveIt!, current simulated real robot pos_.
-  printf("%lf,%lf\n",head_pos_[ROLL],head_cmd_[ROLL]);
+  //head_pos_[ROLL] = head_cmd_[ROLL];// + 0.01*(head_cmd_[ROLL] - head_pos_[ROLL]);
+  //head_pos_[YAW] = head_cmd_[YAW];// + 0.01*(head_cmd_[YAW] - head_pos_[YAW]);
+  ////ROS_DEBUG_STREAM("Debug:" << pos_[0] << cmd_[0]);
+  //// Dump cmd_ from MoveIt!, current simulated real robot pos_.
+  //printf("%lf,%lf\n",head_pos_[ROLL],head_cmd_[ROLL]);
 }
 }

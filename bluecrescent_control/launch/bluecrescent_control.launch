@@ -35,8 +35,28 @@
       #    - arm_wrist_left_yaw
   </rosparam>
 
-  <node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_control" 
-        output="screen" ns="/bluecrescent"/>
+  <rosparam>
+    bluecrescent/robot_hardware:
+    - bluecrescent_hw_head
+    - bluecrescent_hw_rarm
+    bluecrescent/bluecrescent_hw_head:
+      type: bluecrescent_control/BlueCrescent_head
+      joints:
+      - head_roll
+      - head_yaw
+    bluecrescent/bluecrescent_hw_rarm:
+      type: bluecrescent_control/BlueCrescent_rarm
+      joints:
+      - arm_shoulder_right_roll
+      - arm_shoulder_right_pitch
+      - arm_elbow_right_yaw
+      - arm_elbow_right_roll
+      - arm_wrist_right_yaw
+  </rosparam>
+  
+  <node pkg="combined_robot_hw_tests" type="combined_robot_hw_dummy_app" name="dummy_app" />
+  <!--node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_control" 
+        output="screen" ns="/bluecrescent"/ -->
 
 
 </launch>
