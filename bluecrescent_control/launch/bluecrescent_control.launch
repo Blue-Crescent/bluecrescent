@@ -57,9 +57,15 @@
   
   <!--test test-name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_control"/-->
 
-  <node pkg="bluecrescent_control" type="bluecrescent_app" name="bluecrescent_control" />
+  <node pkg="bluecrescent_control" type="bluecrescent_app" name="bluecrescent_control"
+        output="screen"/>
   <!--node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_control" 
         output="screen" ns="/bluecrescent"/ -->
 
+  
+  <node name="controller_spawner" pkg="controller_manager" 
+        type="spawner" respawn="false"
+        output="screen" ns="/bluecrescent"
+        args="joint_state_controller joint_position_controller_R joint_position_controller"/> 
 
 </launch>
