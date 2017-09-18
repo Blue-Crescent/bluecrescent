@@ -42,8 +42,9 @@
 #define CONTROL 0x0
 #define FAULT 0x1
 
+PLUGINLIB_EXPORT_CLASS( bluecrescent_control::BlueCrescent_head, hardware_interface::RobotHW)
 
-namespace combined_robot_hw_tests{
+namespace bluecrescent_control{
 struct termios CookedTermIos;
 struct termios RawTermIos;
 struct timespec ts;
@@ -151,24 +152,24 @@ void BlueCrescent_head::write(ros::Time time, ros::Duration period)
 
   int head_step_cmd_[4];
 
-  head_step_cmd_[ROLL] =(int) (PI_step * combined_robot_hw_tests::head_cmd_[ROLL]/PI);
-  head_step_cmd_[YAW] =(int) (PI_step * combined_robot_hw_tests::head_cmd_[YAW]/PI);
+  head_step_cmd_[ROLL] =(int) (PI_step * bluecrescent_control::head_cmd_[ROLL]/PI);
+  head_step_cmd_[YAW] =(int) (PI_step * bluecrescent_control::head_cmd_[YAW]/PI);
 
-  if(combined_robot_hw_tests::stepcnt[ROLL]<head_step_cmd_[ROLL]){
+  if(bluecrescent_control::stepcnt[ROLL]<head_step_cmd_[ROLL]){
   	cwstep(ROLL);
-	combined_robot_hw_tests::stepcnt[ROLL]++;
-  }else if(combined_robot_hw_tests::stepcnt[ROLL]>head_step_cmd_[ROLL]){
+	bluecrescent_control::stepcnt[ROLL]++;
+  }else if(bluecrescent_control::stepcnt[ROLL]>head_step_cmd_[ROLL]){
  	ccwstep(ROLL);
-	combined_robot_hw_tests::stepcnt[ROLL]--;
+	bluecrescent_control::stepcnt[ROLL]--;
   }else{
 	  //////motor_release();
   }
-  if(combined_robot_hw_tests::stepcnt[YAW]<head_step_cmd_[YAW]){
+  if(bluecrescent_control::stepcnt[YAW]<head_step_cmd_[YAW]){
  	ccwstep(YAW);
-	combined_robot_hw_tests::stepcnt[YAW]++;
-  }else if(combined_robot_hw_tests::stepcnt[YAW]>head_step_cmd_[YAW]){
+	bluecrescent_control::stepcnt[YAW]++;
+  }else if(bluecrescent_control::stepcnt[YAW]>head_step_cmd_[YAW]){
   	cwstep(YAW);
-	combined_robot_hw_tests::stepcnt[YAW]--;
+	bluecrescent_control::stepcnt[YAW]--;
   }else{
 	  //motor_release();
   }
@@ -176,15 +177,15 @@ void BlueCrescent_head::write(ros::Time time, ros::Duration period)
   printstep(ROLL);
   printstep(YAW);
 
-  combined_robot_hw_tests::head_pos_[ROLL] =(int) combined_robot_hw_tests::stepcnt[ROLL] * PI / PI_step;
-  combined_robot_hw_tests::head_pos_[YAW] =(int) combined_robot_hw_tests::stepcnt[YAW] * PI / PI_step;
+  bluecrescent_control::head_pos_[ROLL] =(int) bluecrescent_control::stepcnt[ROLL] * PI / PI_step;
+  bluecrescent_control::head_pos_[YAW] =(int) bluecrescent_control::stepcnt[YAW] * PI / PI_step;
 
 //ROS_DEBUG_STREAM("Debug:" << pos_[0] << cmd_[0]);
   // Dump cmd_ from MoveIt!, current simulated real robot pos_.
-  printf("%lf,%lf,%d,%d ",combined_robot_hw_tests::head_pos_[ROLL],combined_robot_hw_tests::head_cmd_[ROLL],combined_robot_hw_tests::stepcnt[ROLL],head_step_cmd_[ROLL]);
-  printf("%lf,%lf,%d,%d\n",combined_robot_hw_tests::head_pos_[YAW],combined_robot_hw_tests::head_cmd_[YAW],combined_robot_hw_tests::stepcnt[YAW],head_step_cmd_[YAW]);
+  printf("%lf,%lf,%d,%d ",bluecrescent_control::head_pos_[ROLL],bluecrescent_control::head_cmd_[ROLL],bluecrescent_control::stepcnt[ROLL],head_step_cmd_[ROLL]);
+  printf("%lf,%lf,%d,%d\n",bluecrescent_control::head_pos_[YAW],bluecrescent_control::head_cmd_[YAW],bluecrescent_control::stepcnt[YAW],head_step_cmd_[YAW]);
   
-  //combined_robot_hw_tests::head_pos_[ROLL] = combined_robot_hw_tests::head_cmd_[ROLL];// + 0.01*(combined_robot_hw_tests::head_cmd_[ROLL] - combined_robot_hw_tests::head_pos_[ROLL]);
-  //combined_robot_hw_tests::head_pos_[YAW] = combined_robot_hw_tests::head_cmd_[YAW];// + 0.01*(combined_robot_hw_tests::head_cmd_[YAW] - combined_robot_hw_tests::head_pos_[YAW]);
+  //bluecrescent_control::head_pos_[ROLL] = bluecrescent_control::head_cmd_[ROLL];// + 0.01*(bluecrescent_control::head_cmd_[ROLL] - bluecrescent_control::head_pos_[ROLL]);
+  //bluecrescent_control::head_pos_[YAW] = bluecrescent_control::head_cmd_[YAW];// + 0.01*(bluecrescent_control::head_cmd_[YAW] - bluecrescent_control::head_pos_[YAW]);
 }
 }

@@ -6,9 +6,10 @@
 #include <math.h>
 
 
-namespace combined_robot_hw_tests{
+namespace bluecrescent_control{
 void BlueCrescent_rarm::read(ros::Time time, ros::Duration period)
 {
+  printf("This is bluecrescnet_hw_rarm\n");
 }
 
 void BlueCrescent_rarm::write(ros::Time time, ros::Duration period)
@@ -20,3 +21,5 @@ void BlueCrescent_rarm::write(ros::Time time, ros::Duration period)
   // Dump cmd_ from MoveIt!, current simulated real robot pos_.
 }
 }
+
+PLUGINLIB_EXPORT_CLASS( bluecrescent_control::BlueCrescent_rarm, hardware_interface::RobotHW)

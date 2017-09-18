@@ -13,16 +13,17 @@
         joints: 
           - head_roll
           - head_yaw
+
       # Position Controllers ---------------------------------------
-      #joint_position_controller:
-      #  type: position_controllers/JointTrajectoryController
-      #  pid: {p: 10.0, i: 0.0, d: 0.0}
-      #  joints: 
-      #    - arm_shoulder_right_roll
-      #    - arm_shoulder_right_pitch
-      #    - arm_elbow_right_yaw
-      #    - arm_elbow_right_roll
-      #    - arm_wrist_right_yaw
+      joint_position_controller_R:
+        type: position_controllers/JointTrajectoryController
+        pid: {p: 10.0, i: 0.0, d: 0.0}
+        joints: 
+          - arm_shoulder_right_roll
+          - arm_shoulder_right_pitch
+          - arm_elbow_right_yaw
+          - arm_elbow_right_roll
+          - arm_wrist_right_yaw
       ## Position Controllers ---------------------------------------
       #joint_position_controller:
       #  type: position_controllers/JointTrajectoryController
@@ -36,25 +37,27 @@
   </rosparam>
 
   <rosparam>
-    bluecrescent/robot_hardware:
-    - bluecrescent_hw_head
-    - bluecrescent_hw_rarm
-    bluecrescent/bluecrescent_hw_head:
+    robot_hardware:
+     - bluecrescent_hw_head
+     - bluecrescent_hw_rarm
+    bluecrescent_hw_head:
       type: bluecrescent_control/BlueCrescent_head
       joints:
-      - head_roll
-      - head_yaw
-    bluecrescent/bluecrescent_hw_rarm:
+        - head_roll
+        - head_yaw
+    bluecrescent_hw_rarm:
       type: bluecrescent_control/BlueCrescent_rarm
       joints:
-      - arm_shoulder_right_roll
-      - arm_shoulder_right_pitch
-      - arm_elbow_right_yaw
-      - arm_elbow_right_roll
-      - arm_wrist_right_yaw
+        - arm_shoulder_right_roll
+        - arm_shoulder_right_pitch
+        - arm_elbow_right_yaw
+        - arm_elbow_right_roll
+        - arm_wrist_right_yaw
   </rosparam>
   
-  <node pkg="combined_robot_hw_tests" type="combined_robot_hw_dummy_app" name="dummy_app" />
+  <!--test test-name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_control"/-->
+
+  <node pkg="bluecrescent_control" type="bluecrescent_app" name="bluecrescent_control" />
   <!--node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_control" 
         output="screen" ns="/bluecrescent"/ -->
 

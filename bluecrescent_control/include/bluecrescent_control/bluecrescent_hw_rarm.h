@@ -5,12 +5,13 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <pluginlib/class_list_macros.h>
 
 enum ROTATION {ROLL=1,PITCH=2,YAW=0};
 enum ARM {SHOULDER=0,ELBOW,WRIST};
 enum SIDE {LEFT=0,RIGHT};
 
-namespace combined_robot_hw_tests{
+namespace bluecrescent_control{
   double rarm_cmd_[3][3];
   double rarm_pos_[3][3];
   double rarm_vel_[3][3];
@@ -47,35 +48,36 @@ public:
   //debug  fd_M0[1] = wiringPiI2CSetup(drv8830_addr_M0[1]);
   //debug  fd_M1[0] = wiringPiI2CSetup(drv8830_addr_M1[0]);
   //debug  fd_M1[1] = wiringPiI2CSetup(drv8830_addr_M1[1]);
+  printf("This is bluecrescnet_hw_rarm\n");
   
-  hardware_interface::JointStateHandle state_handle_arm_shoulder_right_roll("arm_shoulder_right_roll", &combined_robot_hw_tests::rarm_pos_[SHOULDER][ROLL], &combined_robot_hw_tests::rarm_vel_[SHOULDER][ROLL], &combined_robot_hw_tests::rarm_eff_[SHOULDER][ROLL]);
+  hardware_interface::JointStateHandle state_handle_arm_shoulder_right_roll("arm_shoulder_right_roll", &bluecrescent_control::rarm_pos_[SHOULDER][ROLL], &bluecrescent_control::rarm_vel_[SHOULDER][ROLL], &bluecrescent_control::rarm_eff_[SHOULDER][ROLL]);
   jnt_state_interface.registerHandle(state_handle_arm_shoulder_right_roll);
 
-  hardware_interface::JointHandle rarm_pos_handle_arm_shoulder_right_roll(jnt_state_interface.getHandle("arm_shoulder_right_roll"), &combined_robot_hw_tests::rarm_cmd_[SHOULDER][ROLL]);
+  hardware_interface::JointHandle rarm_pos_handle_arm_shoulder_right_roll(jnt_state_interface.getHandle("arm_shoulder_right_roll"), &bluecrescent_control::rarm_cmd_[SHOULDER][ROLL]);
   jnt_pos_interface.registerHandle(rarm_pos_handle_arm_shoulder_right_roll);
   
-  hardware_interface::JointStateHandle state_handle_arm_shoulder_right_pitch("arm_shoulder_right_pitch", &combined_robot_hw_tests::rarm_pos_[SHOULDER][PITCH], &combined_robot_hw_tests::rarm_vel_[SHOULDER][PITCH], &combined_robot_hw_tests::rarm_eff_[SHOULDER][PITCH]);
+  hardware_interface::JointStateHandle state_handle_arm_shoulder_right_pitch("arm_shoulder_right_pitch", &bluecrescent_control::rarm_pos_[SHOULDER][PITCH], &bluecrescent_control::rarm_vel_[SHOULDER][PITCH], &bluecrescent_control::rarm_eff_[SHOULDER][PITCH]);
   jnt_state_interface.registerHandle(state_handle_arm_shoulder_right_pitch);
 
-  hardware_interface::JointHandle rarm_pos_handle_arm_shoulder_right_pitch(jnt_state_interface.getHandle("arm_shoulder_right_pitch"), &combined_robot_hw_tests::rarm_cmd_[SHOULDER][PITCH]);
+  hardware_interface::JointHandle rarm_pos_handle_arm_shoulder_right_pitch(jnt_state_interface.getHandle("arm_shoulder_right_pitch"), &bluecrescent_control::rarm_cmd_[SHOULDER][PITCH]);
   jnt_pos_interface.registerHandle(rarm_pos_handle_arm_shoulder_right_pitch);
   
-  hardware_interface::JointStateHandle state_handle_arm_elbow_right_yaw("arm_elbow_right_yaw", &combined_robot_hw_tests::rarm_pos_[ELBOW][YAW], &combined_robot_hw_tests::rarm_vel_[ELBOW][YAW], &combined_robot_hw_tests::rarm_eff_[ELBOW][YAW]);
+  hardware_interface::JointStateHandle state_handle_arm_elbow_right_yaw("arm_elbow_right_yaw", &bluecrescent_control::rarm_pos_[ELBOW][YAW], &bluecrescent_control::rarm_vel_[ELBOW][YAW], &bluecrescent_control::rarm_eff_[ELBOW][YAW]);
   jnt_state_interface.registerHandle(state_handle_arm_elbow_right_yaw);
 
-  hardware_interface::JointHandle rarm_pos_handle_arm_elbow_right_yaw(jnt_state_interface.getHandle("arm_elbow_right_yaw"), &combined_robot_hw_tests::rarm_cmd_[ELBOW][YAW]);
+  hardware_interface::JointHandle rarm_pos_handle_arm_elbow_right_yaw(jnt_state_interface.getHandle("arm_elbow_right_yaw"), &bluecrescent_control::rarm_cmd_[ELBOW][YAW]);
   jnt_pos_interface.registerHandle(rarm_pos_handle_arm_elbow_right_yaw);
   
-  hardware_interface::JointStateHandle state_handle_arm_elbow_right_roll("arm_elbow_right_roll", &combined_robot_hw_tests::rarm_pos_[ELBOW][ROLL], &combined_robot_hw_tests::rarm_vel_[ELBOW][ROLL], &combined_robot_hw_tests::rarm_eff_[ELBOW][ROLL]);
+  hardware_interface::JointStateHandle state_handle_arm_elbow_right_roll("arm_elbow_right_roll", &bluecrescent_control::rarm_pos_[ELBOW][ROLL], &bluecrescent_control::rarm_vel_[ELBOW][ROLL], &bluecrescent_control::rarm_eff_[ELBOW][ROLL]);
   jnt_state_interface.registerHandle(state_handle_arm_elbow_right_roll);
 
-  hardware_interface::JointHandle rarm_pos_handle_arm_elbow_right_roll(jnt_state_interface.getHandle("arm_elbow_right_roll"), &combined_robot_hw_tests::rarm_cmd_[ELBOW][ROLL]);
+  hardware_interface::JointHandle rarm_pos_handle_arm_elbow_right_roll(jnt_state_interface.getHandle("arm_elbow_right_roll"), &bluecrescent_control::rarm_cmd_[ELBOW][ROLL]);
   jnt_pos_interface.registerHandle(rarm_pos_handle_arm_elbow_right_roll);
 
-  hardware_interface::JointStateHandle state_handle_arm_wrist_right_yaw("arm_wrist_right_yaw", &combined_robot_hw_tests::rarm_pos_[WRIST][YAW], &combined_robot_hw_tests::rarm_vel_[WRIST][YAW], &combined_robot_hw_tests::rarm_eff_[WRIST][YAW]);
+  hardware_interface::JointStateHandle state_handle_arm_wrist_right_yaw("arm_wrist_right_yaw", &bluecrescent_control::rarm_pos_[WRIST][YAW], &bluecrescent_control::rarm_vel_[WRIST][YAW], &bluecrescent_control::rarm_eff_[WRIST][YAW]);
   jnt_state_interface.registerHandle(state_handle_arm_wrist_right_yaw);
 
-  hardware_interface::JointHandle rarm_pos_handle_arm_wrist_right_yaw(jnt_state_interface.getHandle("arm_wrist_right_yaw"), &combined_robot_hw_tests::rarm_cmd_[WRIST][YAW]);
+  hardware_interface::JointHandle rarm_pos_handle_arm_wrist_right_yaw(jnt_state_interface.getHandle("arm_wrist_right_yaw"), &bluecrescent_control::rarm_cmd_[WRIST][YAW]);
   jnt_pos_interface.registerHandle(rarm_pos_handle_arm_wrist_right_yaw);
   
   
