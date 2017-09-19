@@ -63,9 +63,9 @@
         output="screen" ns="/bluecrescent"/ -->
 
   
-  <node name="controller_spawner" pkg="controller_manager" 
+  <!--node name="controller_spawner" pkg="controller_manager" 
         type="spawner" respawn="false"
         output="screen" ns="/bluecrescent"
-        args="joint_state_controller joint_position_controller_R joint_position_controller"/> 
+	args="joint_state_controller joint_position_controller_R joint_position_controller"/ --> 
 
 </launch>

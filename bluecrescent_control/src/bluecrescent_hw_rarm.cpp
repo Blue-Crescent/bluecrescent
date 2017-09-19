@@ -7,13 +7,20 @@
 
 
 namespace bluecrescent_control{
-void BlueCrescent_rarm::read(ros::Time time, ros::Duration period)
+
+bool BlueCrescent_rarm::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh){
+	
+	return true;
+}
+
+void BlueCrescent_rarm::read(const ros::Time& time, const ros::Duration& period)
 {
   printf("This is bluecrescnet_hw_rarm\n");
 }
 
-void BlueCrescent_rarm::write(ros::Time time, ros::Duration period)
+void BlueCrescent_rarm::write(const ros::Time& time, const ros::Duration& period)
 {
+  printf("This is bluecrescnet_hw_rarm\n");
  
   // Real Robot functionality coding here...
   // below code is simulating real robot delay.	

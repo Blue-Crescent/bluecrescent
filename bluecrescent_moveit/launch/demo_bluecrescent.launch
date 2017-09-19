@@ -1,7 +1,7 @@
 <launch>
 	<!-- gazeboo
   <include file="$(find minimum_ros_control)/launch/bluecrescent_world.launch" />   
-  Load the URDF, SRDF and other .yaml configuration files on the param server
+  Load the URDF, SRand other .yaml configuration files on the param server
   <rosparam param="controller_joint_names">[joint1, joint2]</rosparam>
 	     -->
 

@@ -140,12 +140,16 @@ void BlueCrescent_head::ccwstep(uint8_t num){
 //  ROS_WARN("Shutdown request received. Motor Stopping. Driver Released!");
 //}
 
+bool BlueCrescent_head::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh){
+	
+	return true;
+}
 
-void BlueCrescent_head::read(ros::Time time, ros::Duration period)
+void BlueCrescent_head::read(const ros::Time& time, const ros::Duration& period)
 {
 }
 
-void BlueCrescent_head::write(ros::Time time, ros::Duration period)
+void BlueCrescent_head::write(const ros::Time& time, const ros::Duration& period)
 {
   // Real Robot functionality coding here...
   // below code is simulating real robot delay.	

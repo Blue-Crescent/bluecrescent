@@ -17,16 +17,17 @@ int main(int argc, char *argv[])
 
   //BlueCrescent bluecrescent;
 
-  ros::AsyncSpinner spinner(1);// Hz
+  ros::AsyncSpinner spinner(10);//Hz
   spinner.start();
 
   ros::NodeHandle nh;
   combined_robot_hw::CombinedRobotHW hw;
   bool init_success = hw.init(nh, nh);
+  printf("Initialize: %d \n",init_success);
   
   controller_manager::ControllerManager cm(&hw, nh);
 
-  ros::Duration period(1.0);
+  ros::Duration period(0.1);
   while(ros::ok())
   {
     hw.read(ros::Time::now(), period);

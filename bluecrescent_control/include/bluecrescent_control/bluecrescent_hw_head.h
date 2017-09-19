@@ -28,8 +28,9 @@ public:
   void cwstep(uint8_t num);
   void ccwstep(uint8_t num);
 
-  void read(ros::Time, ros::Duration);
-  void write(ros::Time, ros::Duration);
+  virtual bool init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh);
+  virtual void read(const ros::Time& time, const ros::Duration& period);
+  virtual void write(const ros::Time& time, const ros::Duration& period);
 
 protected:
   hardware_interface::JointStateInterface jnt_state_interface;
