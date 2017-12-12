@@ -26,9 +26,12 @@ catkin_package(
 )
 
 add_library(${PROJECT_NAME} 
-       	src/bluecrescent_hw_head.cpp
-	src/bluecrescent_hw_rarm.cpp
-	#       	src/bluecrescent_hw_larm.cpp
+	src/HEADHW.cpp
+	src/LARMHW.cpp
+	src/RARMHW.cpp
+	#src/bluecrescent_hw_head.cpp
+	#src/bluecrescent_hw_rarm.cpp
+	#src/bluecrescent_hw_larm.cpp
 	)
 
 include_directories(
