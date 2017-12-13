@@ -1,0 +1,19 @@
+<library path="lib/libbluecrescent_control">
+  <class name="bluecrescent_control/HEADHW" type="bluecrescent_control::HEADHW" base_class_type="hardware_interface::RobotHW">
+  <description>
+    A type of RobotHW
+  </description>
+  </class>
+  
+  <class name="bluecrescent_control/RARMHW" type="bluecrescent_control::RARMHW" base_class_type="hardware_interface::RobotHW">
+  <description>
+    A type of RobotHW
+  </description>
+  </class>
+  
+  <class name="bluecrescent_control/LARMHW" type="bluecrescent_control::LARMHW" base_class_type="hardware_interface::RobotHW">
+  <description>
+    A type of RobotHW
+  </description>
+  </class>
+</library>
