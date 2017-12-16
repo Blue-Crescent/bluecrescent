@@ -1,13 +1,13 @@
-controller_manager_ns: controller_manager
+#controller_manager_ns: controller_manager
 controller_list:
-  - name: bluecrescent/joint_position_controller
+  - name: joint_position_controller
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
     default: true
     joints:
       - head_roll
       - head_yaw
-  - name: bluecrescent/joint_position_controller_R
+  - name: joint_position_controller_R
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
     default: true
@@ -16,7 +16,7 @@ controller_list:
       - arm_shoulder_right_pitch
       - arm_elbow_right_yaw
       - arm_elbow_right_roll
-  - name: bluecrescent/joint_position_controller_L
+  - name: joint_position_controller_L
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
     default: true

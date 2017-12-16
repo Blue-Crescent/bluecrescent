@@ -1,23 +1,24 @@
+#define NO_WIRINGPI
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
+
 #include <ros/ros.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/robot_hw.h>
-#include <map>
-#include <string>
-#include <vector>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <errno.h>
-#include <signal.h>
-#include <time.h>
-#include <sys/time.h>
-#include <unistd.h>
+//#include <map>
+//#include <string>
+//#include <vector>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <stdint.h>
+//#include <string.h>
+//#include <errno.h>
 //#include <signal.h>
-
-#include <wiringPi.h>
-#include <wiringPiI2C.h>
+//#include <time.h>
+//#include <sys/time.h>
+//#include <unistd.h>
+//#include <signal.h>
 
 #include <ros/ros.h>
 #include <ros/package.h>

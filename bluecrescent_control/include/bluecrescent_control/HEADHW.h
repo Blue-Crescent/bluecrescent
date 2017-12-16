@@ -1,3 +1,7 @@
+#define NO_WIRINGPI
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
+
 #include <ros/ros.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/joint_state_interface.h>
@@ -16,8 +20,6 @@
 //#include <unistd.h>
 //#include <signal.h>
 
-#include <wiringPi.h>
-#include <wiringPiI2C.h>
 
 #include <ros/package.h>
 #include <ros/xmlrpc_manager.h>

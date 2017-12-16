@@ -1,5 +1,6 @@
 #include <bluecrescent_control/HEADHW.h>
 
+
 namespace bluecrescent_control{
 
 HEADHW::HEADHW()
@@ -10,44 +11,52 @@ HEADHW::HEADHW()
   //debug  wiringPiI2CWriteReg8(fd_mux, 0x0 ,0x04);
   //debug
 
-  //  printf("This is HEADHW\n");
+    printf("This is HEADHW\n");
   
   
   
   }
 
 void HEADHW::motor_release(){
+#ifndef NO_WIRINGPI
 	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,0x18);
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,0x18);
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,0x18);
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,0x18);
+#endif
 }
 void HEADHW::motor_lock(uint8_t num){
 	printf("MOTOR LOCKED!\n");
+#ifndef NO_WIRINGPI
 	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
+#endif
 }
 void HEADHW::cwstep(uint8_t num){
 	lrotate(step[num].A);
 	lrotate(step[num].nA);
 	lrotate(step[num].B);
 	lrotate(step[num].nB);
+#ifndef NO_WIRINGPI
 	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
+#endif
 }
 void HEADHW::ccwstep(uint8_t num){
 	rrotate(step[num].A);
 	rrotate(step[num].nA);
 	rrotate(step[num].B);
 	rrotate(step[num].nB);
+#ifndef NO_WIRINGPI
 	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
+#endif
 }
 
 bool HEADHW::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
@@ -60,10 +69,12 @@ bool HEADHW::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
   	drv8830_addr_M1[0] = 0x62;
   	drv8830_addr_M1[1] = 0x63;
 
+#ifndef NO_WIRINGPI
    	fd_M0[0] = wiringPiI2CSetup(drv8830_addr_M0[0]);
    	fd_M0[1] = wiringPiI2CSetup(drv8830_addr_M0[1]);
    	fd_M1[0] = wiringPiI2CSetup(drv8830_addr_M1[0]);
    	fd_M1[1] = wiringPiI2CSetup(drv8830_addr_M1[1]); 
+#endif
 	
 	step[0].A=0xC1;
 	step[0].nA=(0x1C << 1);

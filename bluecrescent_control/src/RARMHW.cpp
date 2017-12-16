@@ -13,46 +13,69 @@ RARMHW::RARMHW()
 //debug  fd_M0[1] = wiringPiI2CSetup(drv8830_addr_M0[1]);
 //debug  fd_M1[0] = wiringPiI2CSetup(drv8830_addr_M1[0]);
 //debug  fd_M1[1] = wiringPiI2CSetup(drv8830_addr_M1[1]);
-//printf("This is bluecrescnet_hw_rarm\n");
+ printf("This is bluecrescnet_hw_rarm\n");
 
 }
 
 void RARMHW::motor_release(){
+#ifndef NO_WIRINGPI
 	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,0x18);
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,0x18);
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,0x18);
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,0x18);
+#endif
 }
 void RARMHW::motor_lock(uint8_t num){
 	printf("MOTOR LOCKED!\n");
+#ifndef NO_WIRINGPI
 	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
+#endif
 }
 void RARMHW::cwstep(uint8_t num){
 	lrotate(step[num].A);
 	lrotate(step[num].nA);
 	lrotate(step[num].B);
 	lrotate(step[num].nB);
+#ifndef NO_WIRINGPI
 	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
+#endif
 }
 void RARMHW::ccwstep(uint8_t num){
 	rrotate(step[num].A);
 	rrotate(step[num].nA);
 	rrotate(step[num].B);
 	rrotate(step[num].nB);
+#ifndef NO_WIRINGPI
 	wiringPiI2CWriteReg8(fd_M0[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M0[1],CONTROL,B(num));
 	wiringPiI2CWriteReg8(fd_M1[0],CONTROL,A(num));
 	wiringPiI2CWriteReg8(fd_M1[1],CONTROL,B(num));
+#endif
 }
 
 bool RARMHW::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
 {
+	using namespace hardware_interface;
+	
+	stepcnt[0]=0; stepcnt[1]=0; stepcnt[2]=0; stepcnt[3]=0;
+  	drv8830_addr_M0[0] = 0x60;
+  	drv8830_addr_M0[1] = 0x61;
+  	drv8830_addr_M1[0] = 0x62;
+  	drv8830_addr_M1[1] = 0x63;
+
+#ifndef NO_WIRINGPI
+   	fd_M0[0] = wiringPiI2CSetup(drv8830_addr_M0[0]);
+   	fd_M0[1] = wiringPiI2CSetup(drv8830_addr_M0[1]);
+   	fd_M1[0] = wiringPiI2CSetup(drv8830_addr_M1[0]);
+   	fd_M1[1] = wiringPiI2CSetup(drv8830_addr_M1[1]); 
+#endif
+	
 	step[0].A=0xC1;
 	step[0].nA=(0x1C << 1);
 	step[0].B=0x70;
@@ -159,3 +182,4 @@ void RARMHW::write(const ros::Time& time,const ros::Duration& period)
 //  //larm_pos_[YAW] = larm_cmd_[YAW];// + 0.01*(larm_cmd_[YAW] - larm_pos_[YAW]);
 }
 }
+PLUGINLIB_EXPORT_CLASS( bluecrescent_control::RARMHW, hardware_interface::RobotHW)

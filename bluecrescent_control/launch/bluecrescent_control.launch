@@ -1,6 +1,6 @@
 <launch>
   <rosparam>
-    bluecrescent:
+    bluecrescent_control:
       # Publish all joint states -----------------------------------
       joint_state_controller:
         type: joint_state_controller/JointStateController
@@ -23,49 +23,53 @@
           - arm_shoulder_right_pitch
           - arm_elbow_right_yaw
           - arm_elbow_right_roll
-          - arm_wrist_right_yaw
       ## Position Controllers ---------------------------------------
-      #joint_position_controller:
-      #  type: position_controllers/JointTrajectoryController
-      #  pid: {p: 10.0, i: 0.0, d: 0.0}
-      #  joints: 
-      #    - arm_shoulder_left_roll
-      #    - arm_shoulder_left_pitch
-      #    - arm_elbow_left_yaw
-      #    - arm_elbow_left_roll
-      #    - arm_wrist_left_yaw
+      joint_position_controller_L:
+        type: position_controllers/JointTrajectoryController
+        pid: {p: 10.0, i: 0.0, d: 0.0}
+        joints: 
+          - arm_shoulder_left_roll
+          - arm_shoulder_left_pitch
+          - arm_elbow_left_yaw
+          - arm_elbow_left_roll
   </rosparam>
 
   <rosparam>
     robot_hardware:
-     - bluecrescent_hw_head
-     - bluecrescent_hw_rarm
-    bluecrescent_hw_head:
-      type: bluecrescent_control/BlueCrescent_head
+     - HEADHW
+     - RARMHW
+     - LARMHW
+    HEADHW:
+      type: bluecrescent_control/HEADHW
       joints:
         - head_roll
         - head_yaw
-    bluecrescent_hw_rarm:
-      type: bluecrescent_control/BlueCrescent_rarm
+    RARMHW:
+      type: bluecrescent_control/RARMHW
       joints:
         - arm_shoulder_right_roll
         - arm_shoulder_right_pitch
         - arm_elbow_right_yaw
         - arm_elbow_right_roll
-        - arm_wrist_right_yaw
+    LARMHW:
+      type: bluecrescent_control/LARMHW
+      joints:
+        - arm_shoulder_left_roll
+        - arm_shoulder_left_pitch
+        - arm_elbow_left_yaw
+        - arm_elbow_left_roll
   </rosparam>
+  <!--test test-name="bluecrescent_control_control" pkg="bluecrescent_control_control" type="bluecrescent_control_control"/-->
   
-  <!--test test-name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_control"/-->
 
-  <node pkg="bluecrescent_control" type="bluecrescent_app" name="bluecrescent_control"
-        output="screen"/>
-  <!--node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_control" 
-        output="screen" ns="/bluecrescent"/ -->
+<!--node pkg="bluecrescent_control" type="bluecrescent_control_app" name="bluecrescent_control_control" / -->
 
   
-  <!--node name="controller_spawner" pkg="controller_manager" 
+  <node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_app" 
+	output="screen"  />
+
+  <node name="controller_spawner" pkg="controller_manager" 
         type="spawner" respawn="false"
-        output="screen" ns="/bluecrescent"
-	args="joint_state_controller joint_position_controller_R joint_position_controller"/ --> 
-
+	output="screen" ns="/bluecrescent"
+        args="joint_state_controller joint_position_controller joint_position_controller_L joint_position_controller_R"/> 
 </launch>
