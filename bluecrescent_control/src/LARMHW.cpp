@@ -4,7 +4,6 @@ namespace bluecrescent_control{
 
 LARMHW::LARMHW()
   {
-  printf("This is bluecrescnet_hw_larm\n");
 }
 void LARMHW::motor_release(){
 #ifndef NO_WIRINGPI
@@ -51,6 +50,8 @@ void LARMHW::ccwstep(uint8_t num){
 bool LARMHW::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
 {
 	using namespace hardware_interface;
+  
+	printf("This is LARMHW\n");
 	
 	stepcnt[0]=0; stepcnt[1]=0; stepcnt[2]=0; stepcnt[3]=0;
   	drv8830_addr_M0[0] = 0x60;

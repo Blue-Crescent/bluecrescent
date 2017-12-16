@@ -13,7 +13,6 @@ RARMHW::RARMHW()
 //debug  fd_M0[1] = wiringPiI2CSetup(drv8830_addr_M0[1]);
 //debug  fd_M1[0] = wiringPiI2CSetup(drv8830_addr_M1[0]);
 //debug  fd_M1[1] = wiringPiI2CSetup(drv8830_addr_M1[1]);
- printf("This is bluecrescnet_hw_rarm\n");
 
 }
 
@@ -62,6 +61,7 @@ void RARMHW::ccwstep(uint8_t num){
 bool RARMHW::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
 {
 	using namespace hardware_interface;
+ 	printf("This is RARMHW\n");
 	
 	stepcnt[0]=0; stepcnt[1]=0; stepcnt[2]=0; stepcnt[3]=0;
   	drv8830_addr_M0[0] = 0x60;

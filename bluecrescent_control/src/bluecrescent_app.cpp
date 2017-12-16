@@ -13,7 +13,7 @@
 
 int main(int argc, char *argv[])
 {
-  ros::init(argc, argv, "bluecrescent");
+  ros::init(argc, argv, "bluecrescent_control");
 
   //BlueCrescent bluecrescent;
 

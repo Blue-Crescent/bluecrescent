@@ -9,12 +9,14 @@
       # Position Controllers ---------------------------------------
       joint_position_controller:
         type: position_controllers/JointTrajectoryController
+        #type: effort_controllers/JointPositionController
         pid: {p: 10.0, i: 0.0, d: 0.0}
         joints: 
           - head_roll
           - head_yaw
 
       # Position Controllers ---------------------------------------
+        #type: effort_controllers/JointPositionController
       joint_position_controller_R:
         type: position_controllers/JointTrajectoryController
         pid: {p: 10.0, i: 0.0, d: 0.0}
@@ -23,6 +25,7 @@
           - arm_shoulder_right_pitch
           - arm_elbow_right_yaw
           - arm_elbow_right_roll
+
       ## Position Controllers ---------------------------------------
       joint_position_controller_L:
         type: position_controllers/JointTrajectoryController
@@ -60,16 +63,28 @@
         - arm_elbow_left_roll
   </rosparam>
   <!--test test-name="bluecrescent_control_control" pkg="bluecrescent_control_control" type="bluecrescent_control_control"/-->
-  
-
+  <node name="joint_state_publisher" pkg="joint_state_publisher" 
+	  type="joint_state_publisher" respawn="false" output="screen">
+	<rosparam param="/source_list">[/bluecrescent_control/joint_states]</rosparam>
+  </node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" 
+	  type="robot_state_publisher" respawn="false" output="screen">
+	<remap from="/joint_states" to="/bluecrescent_control/joint_states" />
+  </node>
+  <include file="$(find bluecrescent_moveit)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="true"/>
+  </include>
 <!--node pkg="bluecrescent_control" type="bluecrescent_control_app" name="bluecrescent_control_control" / -->
 
+  <rosparam file="$(find bluecrescent_moveit)/config/controllers.yaml"/>
   
-  <node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_app" 
-	output="screen"  />
 
   <node name="controller_spawner" pkg="controller_manager" 
         type="spawner" respawn="false"
-	output="screen" ns="/bluecrescent"
+	output="screen" ns="bluecrescent_control"
         args="joint_state_controller joint_position_controller joint_position_controller_L joint_position_controller_R"/> 
+
+<node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_app" 
+	output="screen" />
 </launch>
+
