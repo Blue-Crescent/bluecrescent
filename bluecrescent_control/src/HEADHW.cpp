@@ -26,10 +26,10 @@ HEADHW::HEADHW()
   	drv8830_addr[HEAD][YAW][1] = 0x63;
 
 #ifndef NO_WIRINGPI
-   	fd[0] = wiringPiI2CSetup(drv8830_addr[HEAD][ROLL][0]);
-   	fd[1] = wiringPiI2CSetup(drv8830_addr[HEAD][ROLL][1]);
-   	fd[0] = wiringPiI2CSetup(drv8830_addr[HEAD][YAW][0]);
-   	fd[1] = wiringPiI2CSetup(drv8830_addr[HEAD][YAW][1]); 
+   	fd[HEAD][ROLL][0] = wiringPiI2CSetup(drv8830_addr[HEAD][ROLL][0]);
+   	fd[HEAD][ROLL][1] = wiringPiI2CSetup(drv8830_addr[HEAD][ROLL][1]);
+   	fd[HEAD][YAW][0] = wiringPiI2CSetup(drv8830_addr[HEAD][YAW][0]);
+   	fd[HEAD][YAW][1] = wiringPiI2CSetup(drv8830_addr[HEAD][YAW][1]); 
 #endif
 
         stepcnt[HEAD][ROLL] = 0;
@@ -38,19 +38,19 @@ HEADHW::HEADHW()
 
 void HEADHW::motor_release(){
 #ifndef NO_WIRINGPI
-	wiringPiI2CWriteReg8(fd[0],CONTROL,0x18);
-	wiringPiI2CWriteReg8(fd[1],CONTROL,0x18);
-	wiringPiI2CWriteReg8(fd[0],CONTROL,0x18);
-	wiringPiI2CWriteReg8(fd[1],CONTROL,0x18);
+	wiringPiI2CWriteReg8(fd[HEAD][ROLL][0],CONTROL,0x18);
+	wiringPiI2CWriteReg8(fd[HEAD][ROLL][1],CONTROL,0x18);
+	wiringPiI2CWriteReg8(fd[HEAD][YAW][0],CONTROL,0x18);
+	wiringPiI2CWriteReg8(fd[HEAD][YAW][1],CONTROL,0x18);
 #endif
 }
 void HEADHW::motor_lock(uint8_t arm,uint8_t joint){
 	printf("MOTOR LOCKED!\n");
 #ifndef NO_WIRINGPI
-	wiringPiI2CWriteReg8(fd[0],CONTROL,A(arm,joint));
-	wiringPiI2CWriteReg8(fd[1],CONTROL,B(arm,joint));
-	wiringPiI2CWriteReg8(fd[0],CONTROL,A(arm,joint));
-	wiringPiI2CWriteReg8(fd[1],CONTROL,B(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][ROLL][0],CONTROL,A(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][ROLL][1],CONTROL,B(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][YAW][0],CONTROL,A(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][YAW][1],CONTROL,B(arm,joint));
 #endif
 }
 void HEADHW::cwstep(uint8_t arm,uint8_t joint){
@@ -59,10 +59,10 @@ void HEADHW::cwstep(uint8_t arm,uint8_t joint){
 	lrotate(step[arm][joint].B);
 	lrotate(step[arm][joint].nB);
 #ifndef NO_WIRINGPI
-	wiringPiI2CWriteReg8(fd[0],CONTROL,A(arm,joint));
-	wiringPiI2CWriteReg8(fd[1],CONTROL,B(arm,joint));
-	wiringPiI2CWriteReg8(fd[0],CONTROL,A(arm,joint));
-	wiringPiI2CWriteReg8(fd[1],CONTROL,B(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][ROLL][0],CONTROL,A(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][ROLL][1],CONTROL,B(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][YAW][0],CONTROL,A(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][YAW][1],CONTROL,B(arm,joint));
 #endif
 }
 void HEADHW::ccwstep(uint8_t arm,uint8_t joint){
@@ -71,10 +71,10 @@ void HEADHW::ccwstep(uint8_t arm,uint8_t joint){
 	rrotate(step[arm][joint].B);
 	rrotate(step[arm][joint].nB);
 #ifndef NO_WIRINGPI
-	wiringPiI2CWriteReg8(fd[0],CONTROL,A(arm,joint));
-	wiringPiI2CWriteReg8(fd[1],CONTROL,B(arm,joint));
-	wiringPiI2CWriteReg8(fd[0],CONTROL,A(arm,joint));
-	wiringPiI2CWriteReg8(fd[1],CONTROL,B(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][ROLL][0],CONTROL,A(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][ROLL][1],CONTROL,B(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][YAW][0],CONTROL,A(arm,joint));
+	wiringPiI2CWriteReg8(fd[HEAD][YAW][1],CONTROL,B(arm,joint));
 #endif
 }
 
@@ -126,9 +126,7 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
   }else{
 	  //////motor_release();
   }
-  if(stepcnt[HEAD][YAW]<head_step_cmd_[HEAD][YAW]){
- 	HEADHW::ccwstep(HEAD,YAW);
-	stepcnt[HEAD][YAW]++;
+  if(stepcnt[HEAD][YAW]<head_step_cmd_[HEAD][YAW]){ HEADHW::ccwstep(HEAD,YAW); stepcnt[HEAD][YAW]++;
   }else if(stepcnt[HEAD][YAW]>head_step_cmd_[HEAD][YAW]){
   	HEADHW::cwstep(HEAD,YAW);
 	stepcnt[HEAD][YAW]--;
