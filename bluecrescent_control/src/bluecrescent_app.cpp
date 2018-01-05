@@ -3,19 +3,15 @@
 #include <controller_manager/controller_manager.h>
 #include <combined_robot_hw/combined_robot_hw.h>
 
-//#include <hardware_interface/joint_command_interface.h>
-//#include <hardware_interface/joint_state_interface.h>
-//#include <hardware_interface/robot_hw.h>
-//#include <map>
-//#include <string>
-//#include <vector>
-//#include <pluginlib/class_list_macros.h>
 
 int main(int argc, char *argv[])
 {
   ros::init(argc, argv, "bluecrescent_control");
 
-  //BlueCrescent bluecrescent;
+  // enabling ROS_DEBUG
+  if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
+     ros::console::notifyLoggerLevelsChanged();
+  }
 
   ros::AsyncSpinner spinner(10);//Hz
   spinner.start();

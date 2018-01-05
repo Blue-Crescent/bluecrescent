@@ -16,6 +16,7 @@ controller_list:
       - arm_shoulder_right_pitch
       - arm_elbow_right_yaw
       - arm_elbow_right_roll
+        #     - arm_wrist_right_yaw
   - name: joint_position_controller_L
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
@@ -25,12 +26,13 @@ controller_list:
       - arm_shoulder_left_pitch
       - arm_elbow_left_yaw
       - arm_elbow_left_roll
-  - name: gripper_controller
-    action_ns: gripper_action
-    type: GripperCommand
-    default: true
-    joints:
-      - arm_wrist_left_yaw
-      - arm_wrist_right_yaw
+        #- arm_wrist_left_yaw
+#  - name: gripper_controller
+#    action_ns: gripper_action
+#    type: GripperCommand
+#    default: true
+#    joints:
+#      - arm_wrist_left_yaw
+#      - arm_wrist_right_yaw
 
   
