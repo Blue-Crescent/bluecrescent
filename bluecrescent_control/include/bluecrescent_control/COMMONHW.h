@@ -43,9 +43,11 @@
 #define STEP2RAD(step) (PI*step/PI_step)
 #define RAD2STEP(rad) (PI_step*rad/PI)
 
-enum ROTATION {ROLL=1,PITCH=2,YAW=0};
-enum ARM {SHOULDER=0,ELBOW,WRIST};
-enum NECK {HEAD=0};
+enum NECK {HEAD_Y=0,HEAD_R};
+enum ARM {SHOULDER_R,SHOULDER_P,ELBOW_Y,ELBOW_R,WRIST_Y};
+//enum ROTATION {YAW=0,ROLL=1,PITCH=2};
+//enum ARM {SHOULDER=0,ELBOW,WRIST};
+//enum NECK {HEAD=0};
 enum SIDE {LEFT=0,RIGHT};
 
 // DRV8830 drvreg Register for phase A,B
