@@ -15,15 +15,24 @@ HEADHW::HEADHW()
 	head_vel_[HEAD_Y]= 0;
 	head_eff_[HEAD_Y]= 0;
 
-	step[HEAD_R].A   = 0xC1;
-	step[HEAD_R].nA  = (0x1C << 1);
-	step[HEAD_R].B   = 0x70;
-	step[HEAD_R].nB  = (0x07 << 1);
-
-	step[HEAD_Y].A   = 0xC1;
-	step[HEAD_Y].nA  = (0x1C << 1);
-	step[HEAD_Y].B   = 0x70;
-	step[HEAD_Y].nB  = (0x07 << 1);
+	// HALFSTEP
+	//step[HEAD_R].A   = 0xC1;
+	//step[HEAD_R].nA  = (0x1C << 1);
+	//step[HEAD_R].B   = 0x70;
+	//step[HEAD_R].nB  = (0x07 << 1);
+	//step[HEAD_Y].A   = 0xC1;
+	//step[HEAD_Y].nA  = (0x1C << 1);
+	//step[HEAD_Y].B   = 0x70;
+	//step[HEAD_Y].nB  = (0x07 << 1);
+	// FULL STEP
+	step[HEAD_R].A   = 0xCC;
+	step[HEAD_R].nA  = (0x33 << 1);
+	step[HEAD_R].B   = 0x66;
+	step[HEAD_R].nB  = 0x33;
+	step[HEAD_Y].A   = 0xCC;
+	step[HEAD_Y].nA  = (0x33 << 1);
+	step[HEAD_Y].B   = 0x66;
+	step[HEAD_Y].nB  = 0x33;
 
   	drv8830_addr[HEAD_R][0] = 0x60;
   	drv8830_addr[HEAD_R][1] = 0x61;
