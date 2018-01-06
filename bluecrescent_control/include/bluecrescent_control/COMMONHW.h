@@ -21,9 +21,9 @@
 
 #define PI 3.141592653589
 //FULL
-//#define PI_step 500
+#define PI_step 500
 //HALF
-#define PI_step 1000
+//#define PI_step 1000
 
 // Avairable joint
 // HEAD ROLL YAW
