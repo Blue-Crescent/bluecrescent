@@ -141,11 +141,11 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
 	  //////motor_release();
   }
   if(stepcnt[YAW]<head_step_cmd_[YAW]){ 
-	ccwstep(YAW); 
+  	cwstep(YAW);
 	stepcnt[YAW]++;
   	printstep(YAW);
   }else if(stepcnt[YAW]>head_step_cmd_[YAW]){
-  	cwstep(YAW);
+	ccwstep(YAW); 
 	stepcnt[YAW]--;
   	printstep(YAW);
   }else{
