@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(bluecrescent_control)
 
-find_package(WiringPi REQUIRED)
+#find_package(WiringPi REQUIRED)
 #find_package(Threads REQUIRED)
 
 find_library(WIRINGPI_LIBRARY wiringPi /home/ubuntu/lib/WiringNP/wiringPi)
@@ -43,8 +43,6 @@ add_executable(bluecrescent_app src/bluecrescent_app.cpp)
 target_link_libraries(bluecrescent_app
   ${catkin_LIBRARIES}
   ${WIRINGPI_LIBRARIES}
-  -lwiringPi
-  -lpthread
 )
 add_dependencies(bluecrescent_app wiringPi)
 

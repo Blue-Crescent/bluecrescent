@@ -3,7 +3,7 @@
       # Publish all joint states -----------------------------------
       joint_state_controller:
         type: joint_state_controller/JointStateController
-        publish_rate: 10.0
+        publish_rate: 100.0
   
       # Position Controllers ---------------------------------------
       joint_position_controller:
@@ -75,11 +75,11 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher" 
 	  type="robot_state_publisher" respawn="false" output="screen">
   </node>
-       -->
 
   <include file="$(find bluecrescent_moveit)/launch/planning_context.launch">
     <arg name="load_robot_description" value="true"/>
   </include>
+       -->
 
   
 <node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_app" 
