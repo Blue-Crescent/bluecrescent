@@ -66,10 +66,9 @@ void LARMHW::motor_release(){
 #endif
 }
 void LARMHW::motor_lock(uint8_t arm,uint8_t joint){
-	printf("MOTOR LOCKED!\n");
 #ifndef NO_WIRINGPI
-	wiringPiI2CWriteReg8(fd[arm][joint][0],CONTROL,A(arm,joint));
-	wiringPiI2CWriteReg8(fd[arm][joint][1],CONTROL,B(arm,joint));
+//	wiringPiI2CWriteReg8(fd[arm][joint][0],CONTROL,A(arm,joint));
+//	wiringPiI2CWriteReg8(fd[arm][joint][1],CONTROL,B(arm,joint));
 #endif
 }
 void LARMHW::LARMHW::cwstep(uint8_t arm,uint8_t joint){
@@ -78,8 +77,8 @@ void LARMHW::LARMHW::cwstep(uint8_t arm,uint8_t joint){
 	lrotate(step[arm][joint].B);
 	lrotate(step[arm][joint].nB);
 #ifndef NO_WIRINGPI
-	wiringPiI2CWriteReg8(fd[arm][joint][0],CONTROL,A(arm,joint));
-	wiringPiI2CWriteReg8(fd[arm][joint][1],CONTROL,B(arm,joint));
+//	wiringPiI2CWriteReg8(fd[arm][joint][0],CONTROL,A(arm,joint));
+//	wiringPiI2CWriteReg8(fd[arm][joint][1],CONTROL,B(arm,joint));
 #endif
 }
 void LARMHW::LARMHW::ccwstep(uint8_t arm,uint8_t joint){
@@ -88,8 +87,8 @@ void LARMHW::LARMHW::ccwstep(uint8_t arm,uint8_t joint){
 	rrotate(step[arm][joint].B);
 	rrotate(step[arm][joint].nB);
 #ifndef NO_WIRINGPI
-	wiringPiI2CWriteReg8(fd[arm][joint][0],CONTROL,A(arm,joint));
-	wiringPiI2CWriteReg8(fd[arm][joint][1],CONTROL,B(arm,joint));
+//	wiringPiI2CWriteReg8(fd[arm][joint][0],CONTROL,A(arm,joint));
+//	wiringPiI2CWriteReg8(fd[arm][joint][1],CONTROL,B(arm,joint));
 #endif
 }
 

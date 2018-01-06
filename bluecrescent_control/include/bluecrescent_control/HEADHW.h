@@ -24,16 +24,17 @@ protected:
 private:
   hardware_interface::JointStateInterface jnt_state_interface;
   hardware_interface::PositionJointInterface jnt_pos_interface;
-  double head_cmd_[1][3];
-  double head_pos_[1][3];
-  double head_vel_[1][3];
-  double head_eff_[1][3];
-  int stepcnt[1][3]; 
-  unsigned char drv8830_addr[1][3][2]; // [PLACE][RPY][8830_0,8830_1]
-  int fd[1][3][2];
+  double head_cmd_[3];
+  double head_pos_[3];
+  double head_vel_[3];
+  double head_eff_[3];
+  int stepcnt[3]; 
+  unsigned char drv8830_addr[3][2]; // [PLACE][RPY][8830_0,8830_1]
+  int fd[3][2];
+  int fd_mux[2];
 
-drv8830reg drvreg[1][4];
-motorstep step[1][4];
+drv8830reg drvreg[4];
+motorstep step[4];
 
 
 };
