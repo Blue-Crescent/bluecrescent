@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(bluecrescent_control)
 
+find_package(WiringPi REQUIRED)
+#find_package(Threads REQUIRED)
 
-FIND_LIBRARY(WIRINGPI_LIBRARY wiringPi /usr/local/lib)
+find_library(WIRINGPI_LIBRARY wiringPi /home/ubuntu/lib/WiringNP/wiringPi)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -20,18 +22,15 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_package(
  INCLUDE_DIRS include
-#  LIBRARIES bluecrescent_control
-  CATKIN_DEPENDS roscpp hardware_interface combined_robot_hw transmission_interface controller_manager
-#  DEPENDS system_lib
+ LIBRARIES bluecrescnt_control
+ CATKIN_DEPENDS roscpp hardware_interface combined_robot_hw transmission_interface controller_manager
+ # DEPENDS system_lib
 )
 
 add_library(${PROJECT_NAME} 
 	src/HEADHW.cpp
 	src/LARMHW.cpp
 	src/RARMHW.cpp
-	#src/bluecrescent_hw_head.cpp
-	#src/bluecrescent_hw_rarm.cpp
-	#src/bluecrescent_hw_larm.cpp
 	)
 
 include_directories(
@@ -40,12 +39,12 @@ include_directories(
 )
 
 add_executable(bluecrescent_app src/bluecrescent_app.cpp)
-add_dependencies(bluecrescent_control wiringPi)
-
 target_link_libraries(bluecrescent_app
-  ${WIRINGPI_LIBRARY}
   ${catkin_LIBRARIES}
+  ${WIRINGPI_LIBRARY}
 )
+add_dependencies(bluecrescent_app wiringPi)
+
 
 
 install(DIRECTORY include/${PROJECT_NAME}/
@@ -54,7 +53,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 install(DIRECTORY launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
-install(TARGETS bluecrescent_control
+install(TARGETS bluecrescent_app
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
