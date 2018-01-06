@@ -32,9 +32,9 @@
 // WRIST YAW
 #define lrotate(x) (x=(((0x80 & x) >> 0x7) | (x << 1)))
 #define rrotate(x) (x=(((0x01 & x) << 0x7) | (x >> 1)))
-#define A(arm,joint) (VSET | (step[arm][joint].nA & 0x2) | (step[arm][joint].A & 0x1)) 
-#define B(arm,joint) (VSET | (step[arm][joint].nB & 0x2) | (step[arm][joint].B & 0x1))
-#define printstep(arm,joint) printf("%x %x %x %x\r\n",0x1 & step[arm][joint].A,(0x2&step[arm][joint].nA)>>1,0x1&step[arm][joint].B,(0x2&step[arm][joint].nB)>>1)
+#define A(joint) (VSET | (step[joint].nA & 0x2) | (step[joint].A & 0x1)) 
+#define B(joint) (VSET | (step[joint].nB & 0x2) | (step[joint].B & 0x1))
+#define printstep(joint) printf("%x %x %x %x\r\n",0x1 & step[joint].A,(0x2&step[joint].nA)>>1,0x1&step[joint].B,(0x2&step[joint].nB)>>1)
 
 #define RAD2DEG(rad) (180*rad/PI)
 #define DEG2RAD(deg) (PI*deg/180)

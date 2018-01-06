@@ -15,9 +15,9 @@ public:
   virtual void write(const ros::Time& time,const ros::Duration& period);
 
   virtual void motor_release();
-  virtual void motor_lock(uint8_t arm,uint8_t joint);
-  virtual void cwstep(uint8_t arm,uint8_t joint);
-  virtual void ccwstep(uint8_t arm,uint8_t joint);
+  virtual void motor_lock(uint8_t joint);
+  virtual void cwstep(uint8_t joint);
+  virtual void ccwstep(uint8_t joint);
 
 protected:
 
