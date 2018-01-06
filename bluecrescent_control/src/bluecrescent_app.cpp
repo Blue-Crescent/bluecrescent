@@ -1,3 +1,6 @@
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
+
 #include <ros/ros.h>
 #include <ros/time.h>
 #include <controller_manager/controller_manager.h>
@@ -6,11 +9,23 @@
 
 int main(int argc, char *argv[])
 {
+  int fd,ret,ID;
+
   ros::init(argc, argv, "bluecrescent_control");
 
   // enabling ROS_DEBUG
   if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
      ros::console::notifyLoggerLevelsChanged();
+  }
+
+  ID = 0x70;
+  /* WHO AM I */
+  fd = wiringPiI2CSetup(ID);
+  printf("setup return : %d\n",fd);
+  					        
+  /* start senser */
+  if((wiringPiI2CWriteReg8(fd,0x00,0x04))<0){
+          printf("I2C write error");
   }
 
   ros::AsyncSpinner spinner(10);//Hz

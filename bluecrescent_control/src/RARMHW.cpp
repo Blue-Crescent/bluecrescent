@@ -225,8 +225,8 @@ void RARMHW::write(const ros::Time& time,const ros::Duration& period)
 	  //////motor_release();
   }
 
-  printstep(SHOULDER,ROLL);
-  printstep(SHOULDER,YAW);
+  //printstep(SHOULDER,ROLL);
+  //printstep(SHOULDER,YAW);
 
 
  // No Feedback exists, dummy Feedback
@@ -238,8 +238,8 @@ void RARMHW::write(const ros::Time& time,const ros::Duration& period)
 
 //ROS_DEBUG_STREAM("Debug:" << pos_[0] << cmd_[0]);
   // Dump cmd_ from MoveIt!, current simulated real robot pos_.
-  ROS_DEBUG("%lf,%lf,%d,%d ",rarm_pos_[SHOULDER][ROLL],rarm_cmd_[SHOULDER][ROLL],stepcnt[SHOULDER][ROLL],rarm_step_cmd_[SHOULDER][ROLL]);
-  ROS_DEBUG("%lf,%lf,%d,%d\n",rarm_pos_[SHOULDER][PITCH],rarm_cmd_[SHOULDER][PITCH],stepcnt[SHOULDER][PITCH],rarm_step_cmd_[SHOULDER][PITCH]);
+  //ROS_DEBUG("%lf,%lf,%d,%d ",rarm_pos_[SHOULDER][ROLL],rarm_cmd_[SHOULDER][ROLL],stepcnt[SHOULDER][ROLL],rarm_step_cmd_[SHOULDER][ROLL]);
+  //ROS_DEBUG("%lf,%lf,%d,%d\n",rarm_pos_[SHOULDER][PITCH],rarm_cmd_[SHOULDER][PITCH],stepcnt[SHOULDER][PITCH],rarm_step_cmd_[SHOULDER][PITCH]);
   
 }
 }

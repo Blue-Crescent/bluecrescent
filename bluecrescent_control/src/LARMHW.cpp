@@ -225,8 +225,8 @@ void LARMHW::write(const ros::Time& time,const ros::Duration& period)
 	  //////motor_release();
   }
 
-  printstep(SHOULDER,ROLL);
-  printstep(SHOULDER,YAW);
+  //printstep(SHOULDER,ROLL);
+  //printstep(SHOULDER,YAW);
 
   larm_pos_[SHOULDER][ROLL]  = (int) STEP2RAD(stepcnt[SHOULDER][ROLL]  );
   larm_pos_[SHOULDER][PITCH] = (int) STEP2RAD(stepcnt[SHOULDER][PITCH] );
@@ -236,8 +236,8 @@ void LARMHW::write(const ros::Time& time,const ros::Duration& period)
 
 //ROS_DEBUG_STREAM("Debug:" << pos_[0] << cmd_[0]);
   // Dump cmd_ from MoveIt!, current simulated real robot pos_.
-  ROS_DEBUG("%lf,%lf,%d,%d ",larm_pos_[SHOULDER][ROLL],larm_cmd_[SHOULDER][ROLL],stepcnt[SHOULDER][ROLL],larm_step_cmd_[SHOULDER][ROLL]);
-  ROS_DEBUG("%lf,%lf,%d,%d\n",larm_pos_[SHOULDER][PITCH],larm_cmd_[SHOULDER][PITCH],stepcnt[SHOULDER][PITCH],larm_step_cmd_[SHOULDER][PITCH]);
+  //ROS_DEBUG("%lf,%lf,%d,%d ",larm_pos_[SHOULDER][ROLL],larm_cmd_[SHOULDER][ROLL],stepcnt[SHOULDER][ROLL],larm_step_cmd_[SHOULDER][ROLL]);
+  //ROS_DEBUG("%lf,%lf,%d,%d\n",larm_pos_[SHOULDER][PITCH],larm_cmd_[SHOULDER][PITCH],stepcnt[SHOULDER][PITCH],larm_step_cmd_[SHOULDER][PITCH]);
   
 }
 }

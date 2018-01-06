@@ -36,12 +36,15 @@ add_library(${PROJECT_NAME}
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${WIRINGPI_INCLUDE_DIRS}
 )
 
 add_executable(bluecrescent_app src/bluecrescent_app.cpp)
 target_link_libraries(bluecrescent_app
   ${catkin_LIBRARIES}
-  ${WIRINGPI_LIBRARY}
+  ${WIRINGPI_LIBRARIES}
+  -lwiringPi
+  -lpthread
 )
 add_dependencies(bluecrescent_app wiringPi)
 

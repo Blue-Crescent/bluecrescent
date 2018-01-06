@@ -9,6 +9,14 @@ HEADHW::HEADHW()
   //debug  fd_mux = wiringPiI2CSetup(0x70);
   //debug  wiringPiI2CWriteReg8(fd_mux, 0x0 ,0x04);
 	
+	head_cmd_[HEAD][ROLL]= 0;
+	head_pos_[HEAD][ROLL]= 0;
+	head_vel_[HEAD][ROLL]= 0;
+	head_eff_[HEAD][ROLL]= 0;
+	head_cmd_[HEAD][YAW]= 0;
+	head_pos_[HEAD][YAW]= 0;
+	head_vel_[HEAD][YAW]= 0;
+	head_eff_[HEAD][YAW]= 0;
 
 	step[HEAD][ROLL].A   = 0xC1;
 	step[HEAD][ROLL].nA  = (0x1C << 1);
@@ -34,7 +42,7 @@ HEADHW::HEADHW()
 
         stepcnt[HEAD][ROLL] = 0;
         stepcnt[HEAD][YAW] = 0;
-  }
+}
 
 void HEADHW::motor_release(){
 #ifndef NO_WIRINGPI
@@ -126,7 +134,9 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
   }else{
 	  //////motor_release();
   }
-  if(stepcnt[HEAD][YAW]<head_step_cmd_[HEAD][YAW]){ HEADHW::ccwstep(HEAD,YAW); stepcnt[HEAD][YAW]++;
+  if(stepcnt[HEAD][YAW]<head_step_cmd_[HEAD][YAW]){ 
+	  HEADHW::ccwstep(HEAD,YAW); 
+	  stepcnt[HEAD][YAW]++;
   }else if(stepcnt[HEAD][YAW]>head_step_cmd_[HEAD][YAW]){
   	HEADHW::cwstep(HEAD,YAW);
 	stepcnt[HEAD][YAW]--;

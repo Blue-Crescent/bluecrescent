@@ -1,4 +1,4 @@
-#define NO_WIRINGPI
+//#define NO_WIRINGPI
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 
