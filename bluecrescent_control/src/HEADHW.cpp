@@ -130,22 +130,22 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
   //chatter_pub.publish(msg);
 
   if(stepcnt[ROLL]<head_step_cmd_[ROLL]){
-  	//HEADHW::cwstep(HEAD,ROLL);
+  	cwstep(ROLL);
 	stepcnt[ROLL]++;
   	printstep(ROLL);
   }else if(stepcnt[ROLL]>head_step_cmd_[ROLL]){
- 	//HEADHW::ccwstep(HEAD,ROLL);
+ 	ccwstep(ROLL);
 	stepcnt[ROLL]--;
   	printstep(ROLL);
   }else{
 	  //////motor_release();
   }
   if(stepcnt[YAW]<head_step_cmd_[YAW]){ 
-	//HEADHW::ccwstep(HEAD,YAW); 
+	ccwstep(YAW); 
 	stepcnt[YAW]++;
   	printstep(YAW);
   }else if(stepcnt[YAW]>head_step_cmd_[YAW]){
-  	//HEADHW::cwstep(HEAD,YAW);
+  	cwstep(YAW);
 	stepcnt[YAW]--;
   	printstep(YAW);
   }else{
