@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[])
 {
-  int fd,ID;
+  int fd;
 
   ros::init(argc, argv, "bluecrescent_control");
 
@@ -18,15 +18,8 @@ int main(int argc, char *argv[])
   //   ros::console::notifyLoggerLevelsChanged();
   //}
 
-  ID = 0x70;
-  /* WHO AM I */
-  fd = wiringPiI2CSetup(ID);
-  printf("setup return : %d\n",fd);
-  					        
-  /* start senser */
-  if((wiringPiI2CWriteReg8(fd,0x00,0x04))<0){
-          printf("I2C write error");
-  }
+  fd = wiringPiI2CSetup(0x70);
+  wiringPiI2CWriteReg8(fd,0x00,0x04);
 
   ros::AsyncSpinner spinner(100);//Hz
   spinner.start();
@@ -38,7 +31,7 @@ int main(int argc, char *argv[])
   
   controller_manager::ControllerManager cm(&hw, nh);
 
-  ros::Duration period(0.01);
+  ros::Duration period(0.02);
   while(ros::ok())
   {
     hw.read(ros::Time::now(), period);
