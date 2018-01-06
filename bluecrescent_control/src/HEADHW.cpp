@@ -45,8 +45,10 @@ HEADHW::HEADHW()
 }
 HEADHW::~HEADHW()
   {
-	printf("Shutdown signal received. HEAD motor off.");
+  	wiringPiI2CWriteReg8(fd_mux[0], 0x0 ,0x04);
+  	wiringPiI2CWriteReg8(fd_mux[1], 0x0 ,0x00);
 	motor_release();
+	printf("Motor driver off : HEAD\n");
   }
 
 void HEADHW::motor_release(){
@@ -135,22 +137,22 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
   //chatter_pub.publish(msg);
 
   if(stepcnt[ROLL]<head_step_cmd_[ROLL]){
-  	cwstep(ROLL);
+  	ccwstep(ROLL);
 	stepcnt[ROLL]++;
   	printstep(ROLL);
   }else if(stepcnt[ROLL]>head_step_cmd_[ROLL]){
- 	ccwstep(ROLL);
+ 	cwstep(ROLL);
 	stepcnt[ROLL]--;
   	printstep(ROLL);
   }else{
 	  //////motor_release();
   }
   if(stepcnt[YAW]<head_step_cmd_[YAW]){ 
-  	cwstep(YAW);
+  	ccwstep(YAW);
 	stepcnt[YAW]++;
   	printstep(YAW);
   }else if(stepcnt[YAW]>head_step_cmd_[YAW]){
-	ccwstep(YAW); 
+	cwstep(YAW); 
 	stepcnt[YAW]--;
   	printstep(YAW);
   }else{
