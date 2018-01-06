@@ -7,7 +7,7 @@ class HEADHW : public hardware_interface::RobotHW
 {
 public:
   HEADHW();
-  virtual ~HEADHW(){};
+  ~HEADHW();
   ros::Time getTime() const { return ros::Time::now(); }
   ros::Duration getPeriod() const { return ros::Duration(DURATION); }
   virtual bool init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh);

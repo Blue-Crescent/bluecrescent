@@ -43,6 +43,11 @@ HEADHW::HEADHW()
         stepcnt[ROLL] = 0;
         stepcnt[YAW] = 0;
 }
+HEADHW::~HEADHW()
+  {
+	printf("Shutdown signal received. HEAD motor off.");
+	motor_release();
+  }
 
 void HEADHW::motor_release(){
 #ifndef NO_WIRINGPI
