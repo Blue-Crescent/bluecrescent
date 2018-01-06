@@ -14,8 +14,8 @@
 #define DURATION 0.01
 
 // 8830 Register
-//#define VSET (0x26 << 2)
-#define VSET (0x30<< 2)
+#define VSET (0x26 << 2)
+//#define VSET (0x30<< 2)
 #define CONTROL 0x0
 #define FAULT 0x1
 

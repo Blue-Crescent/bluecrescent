@@ -9,10 +9,6 @@ LARMHW::LARMHW()
 //debug  fd_mux = wiringPiI2CSetup(0x70);
 //debug  wiringPiI2CWriteReg8(fd_mux, 0x0 ,0x04);
 //debug
-//debug  fd_M0[0] = wiringPiI2CSetup(drv8830_addr_M0[0]);
-//debug  fd_M0[1] = wiringPiI2CSetup(drv8830_addr_M0[1]);
-//debug  fd_M1[0] = wiringPiI2CSetup(drv8830_addr_M1[0]);
-//debug  fd_M1[1] = wiringPiI2CSetup(drv8830_addr_M1[1]);
 	step[SHOULDER][ROLL].A   = 0xC1;
 	step[SHOULDER][ROLL].nA  = (0x1C << 1);
 	step[SHOULDER][ROLL].B   = 0x70;

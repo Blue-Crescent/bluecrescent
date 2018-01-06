@@ -9,14 +9,14 @@
 
 int main(int argc, char *argv[])
 {
-  int fd,ret,ID;
+  int fd,ID;
 
   ros::init(argc, argv, "bluecrescent_control");
 
   // enabling ROS_DEBUG
-  if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
-     ros::console::notifyLoggerLevelsChanged();
-  }
+  //if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
+  //   ros::console::notifyLoggerLevelsChanged();
+  //}
 
   ID = 0x70;
   /* WHO AM I */
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
           printf("I2C write error");
   }
 
-  ros::AsyncSpinner spinner(10);//Hz
+  ros::AsyncSpinner spinner(100);//Hz
   spinner.start();
 
   ros::NodeHandle nh;
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
   
   controller_manager::ControllerManager cm(&hw, nh);
 
-  ros::Duration period(0.1);
+  ros::Duration period(0.01);
   while(ros::ok())
   {
     hw.read(ros::Time::now(), period);

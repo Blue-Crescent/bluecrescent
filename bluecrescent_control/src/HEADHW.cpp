@@ -6,8 +6,6 @@ namespace bluecrescent_control{
 
 HEADHW::HEADHW()
   {
-  //debug  fd_mux = wiringPiI2CSetup(0x70);
-  //debug  wiringPiI2CWriteReg8(fd_mux, 0x0 ,0x04);
 	
 	head_cmd_[HEAD][ROLL]= 0;
 	head_pos_[HEAD][ROLL]= 0;
@@ -34,6 +32,7 @@ HEADHW::HEADHW()
   	drv8830_addr[HEAD][YAW][1] = 0x63;
 
 #ifndef NO_WIRINGPI
+  	//fd_mux = wiringPiI2CSetup(0x70);
    	fd[HEAD][ROLL][0] = wiringPiI2CSetup(drv8830_addr[HEAD][ROLL][0]);
    	fd[HEAD][ROLL][1] = wiringPiI2CSetup(drv8830_addr[HEAD][ROLL][1]);
    	fd[HEAD][YAW][0] = wiringPiI2CSetup(drv8830_addr[HEAD][YAW][0]);
@@ -114,6 +113,9 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
 {
   int head_step_cmd_[1][3];
 
+  //wiringPiI2CWriteReg8(fd_mux, 0x0 ,0x04);
+  
+
   head_step_cmd_[HEAD][ROLL] =(int) RAD2STEP(head_cmd_[HEAD][ROLL]);
   head_step_cmd_[HEAD][YAW] =(int) RAD2STEP(head_cmd_[HEAD][YAW]);
   
@@ -126,26 +128,27 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
   //chatter_pub.publish(msg);
 
   if(stepcnt[HEAD][ROLL]<head_step_cmd_[HEAD][ROLL]){
-  	HEADHW::cwstep(HEAD,ROLL);
+  	//HEADHW::cwstep(HEAD,ROLL);
 	stepcnt[HEAD][ROLL]++;
+  	printstep(HEAD,ROLL);
   }else if(stepcnt[HEAD][ROLL]>head_step_cmd_[HEAD][ROLL]){
- 	HEADHW::ccwstep(HEAD,ROLL);
+ 	//HEADHW::ccwstep(HEAD,ROLL);
 	stepcnt[HEAD][ROLL]--;
+  	printstep(HEAD,ROLL);
   }else{
 	  //////motor_release();
   }
   if(stepcnt[HEAD][YAW]<head_step_cmd_[HEAD][YAW]){ 
-	  HEADHW::ccwstep(HEAD,YAW); 
-	  stepcnt[HEAD][YAW]++;
+	//HEADHW::ccwstep(HEAD,YAW); 
+	stepcnt[HEAD][YAW]++;
+  	printstep(HEAD,YAW);
   }else if(stepcnt[HEAD][YAW]>head_step_cmd_[HEAD][YAW]){
-  	HEADHW::cwstep(HEAD,YAW);
+  	//HEADHW::cwstep(HEAD,YAW);
 	stepcnt[HEAD][YAW]--;
+  	printstep(HEAD,YAW);
   }else{
 	  //motor_release();
   }
-
-  printstep(HEAD,ROLL);
-  printstep(HEAD,YAW);
 
   head_pos_[HEAD][ROLL] =(double)STEP2RAD(stepcnt[HEAD][ROLL]);
   head_pos_[HEAD][YAW]  =(double)STEP2RAD(stepcnt[HEAD][YAW]);
