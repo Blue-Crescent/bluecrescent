@@ -145,35 +145,23 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
   head_step_cmd_[HEAD_R] =(int) RAD2STEP(head_cmd_[HEAD_R]);
   head_step_cmd_[HEAD_Y] =(int) RAD2STEP(head_cmd_[HEAD_Y]);
 
-  //  std_msgs::String msg;
-  //  std::stringstream ss;
-  //  ss << "hello world " ;
-  //  msg.data = ss.str();
-  //  ROS_INFO("%s", msg.data.c_str());
-
-  //chatter_pub.publish(msg);
-
   if(stepcnt[HEAD_R]<head_step_cmd_[HEAD_R]){
     ccwstep(HEAD_R);
     stepcnt[HEAD_R]++;
-    //printstep(HEAD_R);
   }else if(stepcnt[HEAD_R]>head_step_cmd_[HEAD_R]){
     cwstep(HEAD_R);
     stepcnt[HEAD_R]--;
-    //printstep(HEAD_R);
   }else{
-    //////motor_release();
+    motor_release();
   }
   if(stepcnt[HEAD_Y]<head_step_cmd_[HEAD_Y]){
     ccwstep(HEAD_Y);
     stepcnt[HEAD_Y]++;
-    //printstep(HEAD_Y);
   }else if(stepcnt[HEAD_Y]>head_step_cmd_[HEAD_Y]){
     cwstep(HEAD_Y);
     stepcnt[HEAD_Y]--;
-    //printstep(HEAD_Y);
   }else{
-    //motor_release();
+    motor_release();
   }
 
   #ifdef NO_WIRINGPI
