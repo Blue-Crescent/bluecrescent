@@ -51,12 +51,23 @@ HEADHW::HEADHW()
         stepcnt[HEAD_R] = 0;
         stepcnt[HEAD_Y] = 0;
 }
-void HEADHW::motor_release(){
+void HEADHW::motor_release(uint8_t joint){
 #ifndef NO_WIRINGPI
-	wiringPiI2CWriteReg8(fd[HEAD_R][0],CONTROL,0x18);
-	wiringPiI2CWriteReg8(fd[HEAD_R][1],CONTROL,0x18);
-	wiringPiI2CWriteReg8(fd[HEAD_Y][0],CONTROL,0x18);
-	wiringPiI2CWriteReg8(fd[HEAD_Y][1],CONTROL,0x18);
+  switch(joint){
+    case HEAD_R:
+	   wiringPiI2CWriteReg8(fd[HEAD_R][0],CONTROL,0x18);
+	   wiringPiI2CWriteReg8(fd[HEAD_R][1],CONTROL,0x18);
+     break;
+    case HEAD_Y:
+	   wiringPiI2CWriteReg8(fd[HEAD_Y][0],CONTROL,0x18);
+	   wiringPiI2CWriteReg8(fd[HEAD_Y][1],CONTROL,0x18);
+     break;
+    default:
+	   wiringPiI2CWriteReg8(fd[HEAD_R][0],CONTROL,0x18);
+	   wiringPiI2CWriteReg8(fd[HEAD_R][1],CONTROL,0x18);
+	   wiringPiI2CWriteReg8(fd[HEAD_Y][0],CONTROL,0x18);
+	   wiringPiI2CWriteReg8(fd[HEAD_Y][1],CONTROL,0x18);
+   }
 #endif
 }
 void HEADHW::motor_lock(uint8_t joint){
@@ -152,7 +163,7 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
     cwstep(HEAD_R);
     stepcnt[HEAD_R]--;
   }else{
-    motor_release();
+    motor_release(joint);
   }
   if(stepcnt[HEAD_Y]<head_step_cmd_[HEAD_Y]){
     ccwstep(HEAD_Y);
@@ -161,7 +172,7 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
     cwstep(HEAD_Y);
     stepcnt[HEAD_Y]--;
   }else{
-    motor_release();
+    motor_release(joint);
   }
 
   #ifdef NO_WIRINGPI
@@ -179,7 +190,7 @@ HEADHW::~HEADHW()
   wiringPiI2CWriteReg8(fd_mux[0], 0x0 ,0x04);
   wiringPiI2CWriteReg8(fd_mux[1], 0x0 ,0x00);
   #endif
-  motor_release();
+  motor_release(-1);
   printf("Motor driver off : HEADHW\n");
 }
 
