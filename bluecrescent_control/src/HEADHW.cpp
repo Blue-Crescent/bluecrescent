@@ -163,7 +163,7 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
     cwstep(HEAD_R);
     stepcnt[HEAD_R]--;
   }else{
-    motor_release(joint);
+    motor_release(HEAD_R);
   }
   if(stepcnt[HEAD_Y]<head_step_cmd_[HEAD_Y]){
     ccwstep(HEAD_Y);
@@ -172,7 +172,7 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
     cwstep(HEAD_Y);
     stepcnt[HEAD_Y]--;
   }else{
-    motor_release(joint);
+    motor_release(HEAD_Y);
   }
 
   #ifdef NO_WIRINGPI
