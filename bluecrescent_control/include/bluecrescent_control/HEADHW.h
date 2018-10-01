@@ -28,7 +28,7 @@ private:
   double head_pos_[3];
   double head_vel_[3];
   double head_eff_[3];
-  int stepcnt[3]; 
+  int stepcnt[3];
   unsigned char drv8830_addr[3][2]; // [PLACE][RPY][8830_0,8830_1]
   int fd[3][2];
   int fd_mux[2];

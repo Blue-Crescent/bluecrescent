@@ -1,6 +1,9 @@
-#define NO_WIRINGPI
-//#include <wiringPi.h>
-//#include <wiringPiI2C.h>
+//#define NO_WIRINGPI
+
+#ifndef NO_WIRINGPI
+#include <wiringPi.h>
+#include <wiringPiI2C.h>
+#endif
 
 #include <ros/ros.h>
 #include <hardware_interface/joint_command_interface.h>
@@ -32,7 +35,7 @@
 // WRIST YAW
 #define lrotate(x) (x=(((0x80 & x) >> 0x7) | (x << 1)))
 #define rrotate(x) (x=(((0x01 & x) << 0x7) | (x >> 1)))
-#define A(joint) (VSET | (step[joint].nA & 0x2) | (step[joint].A & 0x1)) 
+#define A(joint) (VSET | (step[joint].nA & 0x2) | (step[joint].A & 0x1))
 #define B(joint) (VSET | (step[joint].nB & 0x2) | (step[joint].B & 0x1))
 #define printstep(joint) printf("%x %x %x %x\r\n",0x1 & step[joint].A,(0x2&step[joint].nA)>>1,0x1&step[joint].B,(0x2&step[joint].nB)>>1)
 
@@ -51,7 +54,7 @@ enum ARM {SHOULDER_R,SHOULDER_P,ELBOW_Y,ELBOW_R,WRIST_Y};
 enum SIDE {LEFT=0,RIGHT};
 
 // DRV8830 drvreg Register for phase A,B
-typedef struct 
+typedef struct
 {
  unsigned char CONTROL_A;
  unsigned char CONTROL_B;
@@ -90,4 +93,3 @@ typedef struct
 //	//M3
 //	{0xC1,(0x1C << 1),0x70,(0x07 << 1)}
 //};
-

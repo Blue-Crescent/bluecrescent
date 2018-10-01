@@ -1,4 +1,3 @@
-//#define NO_WIRINGPI
 //#include <ros/xmlrpc_manager.h>
 
 #include "COMMONHW.h"
