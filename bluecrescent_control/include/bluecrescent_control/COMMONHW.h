@@ -1,6 +1,6 @@
-//#define NO_WIRINGPI
-#include <wiringPi.h>
-#include <wiringPiI2C.h>
+#define NO_WIRINGPI
+//#include <wiringPi.h>
+//#include <wiringPiI2C.h>
 
 #include <ros/ros.h>
 #include <hardware_interface/joint_command_interface.h>

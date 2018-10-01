@@ -4,13 +4,13 @@
       joint_state_controller:
         type: joint_state_controller/JointStateController
         publish_rate: 100.0
-  
+
       # Position Controllers ---------------------------------------
       joint_position_controller:
         type: position_controllers/JointTrajectoryController
         #type: effort_controllers/JointPositionController
         pid: {p: 10.0, i: 0.0, d: 0.0}
-        joints: 
+        joints:
           - head_roll
           - head_yaw
 
@@ -18,7 +18,7 @@
       joint_position_controller_R:
         type: position_controllers/JointTrajectoryController
         pid: {p: 10.0, i: 0.0, d: 0.0}
-        joints: 
+        joints:
           - arm_shoulder_right_roll
           - arm_shoulder_right_pitch
           - arm_elbow_right_yaw
@@ -29,7 +29,7 @@
       joint_position_controller_L:
         type: position_controllers/JointTrajectoryController
         pid: {p: 10.0, i: 0.0, d: 0.0}
-        joints: 
+        joints:
           - arm_shoulder_left_roll
           - arm_shoulder_left_pitch
           - arm_elbow_left_yaw
@@ -65,30 +65,29 @@
     #    - arm_wrist_left_yaw
   </rosparam>
   <!--test test-name="bluecrescent_control_control" pkg="bluecrescent_control_control" type="bluecrescent_control_control"/
+       -->
   <rosparam file="$(find bluecrescent_moveit)/config/controllers.yaml" command="load"/>
 
-  <node name="joint_state_publisher" pkg="joint_state_publisher" 
+  <node name="joint_state_publisher" pkg="joint_state_publisher"
 	  type="joint_state_publisher" respawn="false" output="screen">
 	<rosparam param="/source_list">[/bluecrescent_control/joint_states]</rosparam>
   </node>
 	<remap from="/joint_states" to="/bluecrescent_control/joint_states" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher" 
+  <node name="robot_state_publisher" pkg="robot_state_publisher"
 	  type="robot_state_publisher" respawn="false" output="screen">
   </node>
 
   <include file="$(find bluecrescent_moveit)/launch/planning_context.launch">
     <arg name="load_robot_description" value="true"/>
   </include>
-       -->
 
-  
-<node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_app" 
+
+<node name="bluecrescent_control" pkg="bluecrescent_control" type="bluecrescent_app"
 	output="screen" />
 
-  <node name="controller_spawner" pkg="controller_manager" 
-        type="spawner" 
+  <node name="controller_spawner" pkg="controller_manager"
+        type="spawner"
 	ns="/"
-	args="joint_state_controller joint_position_controller joint_position_controller_L joint_position_controller_R"/> 
+	args="joint_state_controller joint_position_controller joint_position_controller_L joint_position_controller_R"/>
 
 </launch>
-

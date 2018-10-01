@@ -17,7 +17,7 @@ RARMHW::RARMHW()
 	step[SHOULDER_R].nA  = (0x1C << 1);
 	step[SHOULDER_R].B   = 0x70;
 	step[SHOULDER_R].nB  = (0x07 << 1);
-        
+
 	step[SHOULDER_P].A  = 0xC1;
 	step[SHOULDER_P].nA = (0x1C << 1);
 	step[SHOULDER_P].B  = 0x70;
@@ -43,7 +43,7 @@ RARMHW::RARMHW()
 	stepcnt[ELBOW_R] = 0;
 	stepcnt[ELBOW_Y] = 0;
 	stepcnt[WRIST_Y] = 0;
-  	
+
 	drv8830_addr[SHOULDER_R][0] = 0x60;
 	drv8830_addr[SHOULDER_R][1] = 0x61;
 	drv8830_addr[SHOULDER_P][0] = 0x62;
@@ -113,7 +113,7 @@ bool RARMHW::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
    	fd[WRIST_Y][0]      = wiringPiI2CSetup(drv8830_addr[WRIST_Y][0]);
    	fd[WRIST_Y][1]      = wiringPiI2CSetup(drv8830_addr[WRIST_Y][1]);
 #endif
-	
+
 // SHOULDER ROLL PITCH
 // ELBOW ROLL YAW
 // WRIST YAW
@@ -123,19 +123,19 @@ bool RARMHW::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
 
   hardware_interface::JointHandle rarm_pos_handle_arm_shoulder_right_roll(jnt_state_interface.getHandle("arm_shoulder_right_roll"), &rarm_cmd_[SHOULDER_R]);
   jnt_pos_interface.registerHandle(rarm_pos_handle_arm_shoulder_right_roll);
-  
+
   hardware_interface::JointStateHandle state_handle_arm_shoulder_right_pitch("arm_shoulder_right_pitch", &rarm_pos_[SHOULDER_P], &rarm_vel_[SHOULDER_P], &rarm_eff_[SHOULDER_P]);
   jnt_state_interface.registerHandle(state_handle_arm_shoulder_right_pitch);
 
   hardware_interface::JointHandle rarm_pos_handle_arm_shoulder_right_pitch(jnt_state_interface.getHandle("arm_shoulder_right_pitch"), &rarm_cmd_[SHOULDER_P]);
   jnt_pos_interface.registerHandle(rarm_pos_handle_arm_shoulder_right_pitch);
-  
+
   hardware_interface::JointStateHandle state_handle_arm_elbow_right_yaw("arm_elbow_right_yaw", &rarm_pos_[ELBOW_Y], &rarm_vel_[ELBOW_Y], &rarm_eff_[ELBOW_Y]);
   jnt_state_interface.registerHandle(state_handle_arm_elbow_right_yaw);
 
   hardware_interface::JointHandle rarm_pos_handle_arm_elbow_right_yaw(jnt_state_interface.getHandle("arm_elbow_right_yaw"), &rarm_cmd_[ELBOW_Y]);
   jnt_pos_interface.registerHandle(rarm_pos_handle_arm_elbow_right_yaw);
-  
+
   hardware_interface::JointStateHandle state_handle_arm_elbow_right_roll("arm_elbow_right_roll", &rarm_pos_[ELBOW_R], &rarm_vel_[ELBOW_R], &rarm_eff_[ELBOW_R]);
   jnt_state_interface.registerHandle(state_handle_arm_elbow_right_roll);
 
@@ -147,15 +147,15 @@ bool RARMHW::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
 
   hardware_interface::JointHandle rarm_pos_handle_arm_wrist_right_yaw(jnt_state_interface.getHandle("arm_wrist_right_yaw"), &rarm_cmd_[WRIST_Y]);
   jnt_pos_interface.registerHandle(rarm_pos_handle_arm_wrist_right_yaw);
-  
-  
+
+
   registerInterface(&jnt_state_interface);
   registerInterface(&jnt_pos_interface);
 
   return true;
 }
-  
-  
+
+
 void RARMHW::read(const ros::Time& time,const ros::Duration& period)
 {
 }
@@ -239,7 +239,16 @@ void RARMHW::write(const ros::Time& time,const ros::Duration& period)
   // Dump cmd_ from MoveIt!, current simulated real robot pos_.
   //ROS_DEBUG("%lf,%lf,%d,%d ",rarm_pos_[SHOULDER_R],rarm_cmd_[SHOULDER_R],stepcnt[SHOULDER_R],rarm_step_cmd_[SHOULDER_R]);
   //ROS_DEBUG("%lf,%lf,%d,%d\n",rarm_pos_[SHOULDER_P],rarm_cmd_[SHOULDER_P],stepcnt[SHOULDER_P],rarm_step_cmd_[SHOULDER_P]);
-  
+
 }
+RARMHW::~RARMHW()
+  {
+#ifndef NO_WIRINGPI
+//Debug  	wiringPiI2CWriteReg8(fd_mux[0], 0x0 ,0x04);
+//Debug  	wiringPiI2CWriteReg8(fd_mux[1], 0x0 ,0x00);
+#endif
+	motor_release();
+	printf("Motor driver off : RARMHW\n");
+  }
 }
 PLUGINLIB_EXPORT_CLASS( bluecrescent_control::RARMHW, hardware_interface::RobotHW)

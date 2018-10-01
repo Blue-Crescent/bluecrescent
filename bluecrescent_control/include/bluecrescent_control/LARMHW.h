@@ -12,7 +12,7 @@ class LARMHW : public hardware_interface::RobotHW
 {
 public:
   LARMHW();
-  virtual ~LARMHW(){};
+  ~LARMHW();
   ros::Time getTime() const { return ros::Time::now(); }
   ros::Duration getPeriod() const { return ros::Duration(DURATION); }
 
@@ -36,7 +36,7 @@ private:
   int stepcnt[5];
   unsigned char drv8830_addr[5][2]; // [PLACE][RPY][8830_0,8830_1]
   int fd[5][2];
-	  
+
 drv8830reg drvreg[5];
 motorstep step[5];
 

@@ -1,5 +1,9 @@
+#define NO_WIRINGPI
+
+#ifndef NO_WIRINGPI
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
+#endif
 
 #include <ros/ros.h>
 #include <ros/time.h>
@@ -18,8 +22,10 @@ int main(int argc, char *argv[])
   //   ros::console::notifyLoggerLevelsChanged();
   //}
 
+#ifndef NO_WIRINGPI
   fd = wiringPiI2CSetup(0x70);
   wiringPiI2CWriteReg8(fd,0x00,0x04);
+#endif
 
   ros::AsyncSpinner spinner(100);//Hz
   spinner.start();
@@ -27,8 +33,8 @@ int main(int argc, char *argv[])
   ros::NodeHandle nh;
   combined_robot_hw::CombinedRobotHW hw;
   bool init_success = hw.init(nh, nh);
-  printf("Initialize: %d \n",init_success);
-  
+  printf("Initialize Status: %d \n",init_success);
+
   controller_manager::ControllerManager cm(&hw, nh);
 
   ros::Duration period(0.02);
@@ -43,4 +49,3 @@ int main(int argc, char *argv[])
 
   return 0;
 }
-
