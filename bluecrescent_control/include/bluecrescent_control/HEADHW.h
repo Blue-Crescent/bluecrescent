@@ -33,6 +33,7 @@ private:
   int fd[3][2];
   int fd_mux[2];
   int drv[3];
+  int switching;
 
 drv8830reg drvreg[4];
 motorstep step[4];

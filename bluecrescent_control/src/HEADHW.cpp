@@ -16,28 +16,28 @@ HEADHW::HEADHW()
 	head_eff_[HEAD_Y]= 0;
 
 	// HALFSTEP
-	//step[HEAD_R].A   = 0xC1;
-	//step[HEAD_R].nA  = (0x1C << 1);
-	//step[HEAD_R].B   = 0x70;
-	//step[HEAD_R].nB  = (0x07 << 1);
-	//step[HEAD_Y].A   = 0xC1;
-	//step[HEAD_Y].nA  = (0x1C << 1);
-	//step[HEAD_Y].B   = 0x70;
-	//step[HEAD_Y].nB  = (0x07 << 1);
+	step[HEAD_R].A   = 0xC1;
+	step[HEAD_R].nA  = (0x1C << 1);
+	step[HEAD_R].B   = 0x70;
+	step[HEAD_R].nB  = (0x07 << 1);
+	step[HEAD_Y].A   = 0xC1;
+	step[HEAD_Y].nA  = (0x1C << 1);
+	step[HEAD_Y].B   = 0x70;
+	step[HEAD_Y].nB  = (0x07 << 1);
 	// FULL STEP
-	step[HEAD_R].A   = 0xCC;
-	step[HEAD_R].nA  = (0x33 << 1);
-	step[HEAD_R].B   = 0x66;
-	step[HEAD_R].nB  = 0x33;
-	step[HEAD_Y].A   = 0xCC;
-	step[HEAD_Y].nA  = (0x33 << 1);
-	step[HEAD_Y].B   = 0x66;
-	step[HEAD_Y].nB  = 0x33;
+	//step[HEAD_R].A   = 0xCC;
+	//step[HEAD_R].nA  = (0x33 << 1);
+	//step[HEAD_R].B   = 0x66;
+	//step[HEAD_R].nB  = 0x33;
+	//step[HEAD_Y].A   = 0xCC;
+	//step[HEAD_Y].nA  = (0x33 << 1);
+	//step[HEAD_Y].B   = 0x66;
+	//step[HEAD_Y].nB  = 0x33;
 
-  	drv8830_addr[HEAD_R][0] = 0x60;
-  	drv8830_addr[HEAD_R][1] = 0x61;
-  	drv8830_addr[HEAD_Y][0] = 0x62;
-  	drv8830_addr[HEAD_Y][1] = 0x63;
+  	drv8830_addr[HEAD_Y][0] = 0x60;
+  	drv8830_addr[HEAD_Y][1] = 0x61;
+  	drv8830_addr[HEAD_R][0] = 0x62;
+  	drv8830_addr[HEAD_R][1] = 0x63;
 
 #ifndef NO_WIRINGPI
   	fd_mux[0] = wiringPiI2CSetup(0x70);
@@ -52,6 +52,7 @@ HEADHW::HEADHW()
         stepcnt[HEAD_Y] = 0;
         drv[HEAD_R] = 0;
         drv[HEAD_Y] = 0;
+	switching=HEAD_R;
 }
 void HEADHW::motor_release(uint8_t joint){
 #ifndef NO_WIRINGPI
@@ -121,7 +122,7 @@ void HEADHW::ccwstep(uint8_t joint){
 bool HEADHW::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
 {
   using namespace hardware_interface;
-  printf("This is HEADHW\n");
+  ROS_INFO("This is HEADHW\n");
 
   //chatter_pub = robot_hw_nh.advertise<std_msgs::String>("chatter", 1000);
 
@@ -142,9 +143,6 @@ void HEADHW::read(const ros::Time& time,const ros::Duration& period)
 {
   head_pos_[HEAD_R] =(double)STEP2RAD(stepcnt[HEAD_R]);
   head_pos_[HEAD_Y]  =(double)STEP2RAD(stepcnt[HEAD_Y]);
-  #ifdef NO_WIRINGPI
-  //	printf("R: %.3lf %.3lf\n",head_pos_[HEAD_R],head_pos_[HEAD_Y]);
-  #endif
 }
 
 void HEADHW::write(const ros::Time& time,const ros::Duration& period)
@@ -159,38 +157,39 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
   head_step_cmd_[HEAD_Y] =(int) RAD2STEP(head_cmd_[HEAD_Y]);
 
 
-  if(stepcnt[HEAD_R]<head_step_cmd_[HEAD_R]){
-    drv[HEAD_R] = 1;
-    ccwstep(HEAD_R);
-    stepcnt[HEAD_R]++;
-  }else if(stepcnt[HEAD_R]>head_step_cmd_[HEAD_R]){
-    drv[HEAD_R] = 1;
-    cwstep(HEAD_R);
-    stepcnt[HEAD_R]--;
-  }else{
-    if(drv[HEAD_R]==1) {motor_release(HEAD_R); ROS_DEBUG("HEAD_Y Released.\n"); }
-    drv[HEAD_R] = 0;
+  switch(switching){
+	  case HEAD_R:
+		if(stepcnt[HEAD_R]<head_step_cmd_[HEAD_R]){
+		        drv[HEAD_R] = 1;
+		        ccwstep(HEAD_R);
+		        stepcnt[HEAD_R]++;
+		}else if(stepcnt[HEAD_R]>head_step_cmd_[HEAD_R]){
+		        drv[HEAD_R] = 1;
+		        cwstep(HEAD_R);
+		        stepcnt[HEAD_R]--;
+		}else{
+		        if(drv[HEAD_R]==1) {motor_release(HEAD_R); ROS_DEBUG("HEAD_Y Released.\n"); }
+		        drv[HEAD_R] = 0;
+		}
+		ROS_DEBUG("WR:%d %.3lf %d\n",drv[HEAD_R],head_pos_[HEAD_R],stepcnt[HEAD_R]);
+		switching=HEAD_Y;
+	  	break;
+	  case HEAD_Y:
+	  	if(stepcnt[HEAD_Y]<head_step_cmd_[HEAD_Y]){
+	  	        drv[HEAD_Y] = 1;
+	  	        ccwstep(HEAD_Y);
+	  	        stepcnt[HEAD_Y]++;
+	  	}else if(stepcnt[HEAD_Y]>head_step_cmd_[HEAD_Y]){
+	  	        drv[HEAD_Y] = 1;
+	  	        cwstep(HEAD_Y);
+	  	        stepcnt[HEAD_Y]--;
+	  	}else{
+	  	        if(drv[HEAD_Y]==1) {motor_release(HEAD_Y); ROS_DEBUG("HEAD_Y Released.\n"); }
+	  	        drv[HEAD_Y] = 0;
+	  	}
+	  	ROS_DEBUG("WY:%d %.3lf %d\n",drv[HEAD_Y],head_pos_[HEAD_Y],stepcnt[HEAD_Y]);
+	  	switching=HEAD_R;
   }
-  #ifdef NO_WIRINGPI
-  ROS_DEBUG("WR:%d %.3lf %d\n",drv[HEAD_R],head_pos_[HEAD_R],stepcnt[HEAD_R]);
-  #endif
-  if(stepcnt[HEAD_Y]<head_step_cmd_[HEAD_Y]){
-    drv[HEAD_Y] = 1;
-    ccwstep(HEAD_Y);
-    stepcnt[HEAD_Y]++;
-  }else if(stepcnt[HEAD_Y]>head_step_cmd_[HEAD_Y]){
-    drv[HEAD_Y] = 1;
-    cwstep(HEAD_Y);
-    stepcnt[HEAD_Y]--;
-  }else{
-    if(drv[HEAD_Y]==1) {motor_release(HEAD_Y); ROS_DEBUG("HEAD_Y Released.\n"); }
-    drv[HEAD_Y] = 0;
-  }
-
-  #ifdef NO_WIRINGPI
-  ROS_DEBUG("WY:%d %.3lf %d\n",drv[HEAD_Y],head_pos_[HEAD_Y],stepcnt[HEAD_Y]);
-  #endif
-
   // Dump cmd_ from MoveIt!, current simulated real robot pos_.
   //ROS_DEBUG("H:%lf , %lf , %d , %d "  , RAD2DEG(head_pos_[HEAD_R]), RAD2DEG(head_cmd_[HEAD_R]) , stepcnt[HEAD_R] , head_step_cmd_[HEAD_R]);
   //ROS_DEBUG("H:%lf , %lf , %d , %d " , RAD2DEG(head_pos_[HEAD_Y]) , RAD2DEG(head_cmd_[HEAD_Y] ) , stepcnt[HEAD_Y]  , head_step_cmd_[HEAD_Y]);

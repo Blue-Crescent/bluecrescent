@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
   controller_manager::ControllerManager cm(&hw, nh);
 
   //ros::Duration period(0.02);
-  ros::Duration period(0.05);
+  ros::Duration period(0.01);
   while(ros::ok())
   {
     hw.read(ros::Time::now(), period);
