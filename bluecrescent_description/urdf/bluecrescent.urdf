@@ -36,7 +36,7 @@
 
   </link>
   <joint name="head_roll" type="revolute">
-	<limit effort="1000.0" lower="-0.5" upper="0.5" velocity="0.5"/>
+	<limit effort="1000.0" lower="-0.4" upper="0.4" velocity="0.2"/>
   	<parent link="neckjoint"/>
  	<child link="head"/>
   	<origin rpy="0 0 0" xyz="0 0 0.045"/>
@@ -44,7 +44,7 @@
   <link name="neckjoint">
   </link>
   <joint name="head_yaw" type="revolute">
-	<limit effort="1000.0" lower="-0.5" upper="0.5" velocity="0.5"/>
+	<limit effort="1000.0" lower="-0.4" upper="0.4" velocity="0.2"/>
   	<parent link="neck"/>
 	<child link="neckjoint"/>
 	<axis xyz="0 0 1"/>
@@ -342,8 +342,8 @@
       <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
     </inertial>
   </link>
-  
-  
+
+
   <joint name="groin_left" type="fixed">
   	<parent link="base_link"/>
  	<child link="leg_upper_left"/>

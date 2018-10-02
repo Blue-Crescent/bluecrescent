@@ -32,9 +32,11 @@ private:
   unsigned char drv8830_addr[3][2]; // [PLACE][RPY][8830_0,8830_1]
   int fd[3][2];
   int fd_mux[2];
+  int drv[3];
 
 drv8830reg drvreg[4];
 motorstep step[4];
+
 
 
 };

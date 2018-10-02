@@ -50,6 +50,8 @@ HEADHW::HEADHW()
 
         stepcnt[HEAD_R] = 0;
         stepcnt[HEAD_Y] = 0;
+        drv[HEAD_R] = 0;
+        drv[HEAD_Y] = 0;
 }
 void HEADHW::motor_release(uint8_t joint){
 #ifndef NO_WIRINGPI
@@ -71,7 +73,7 @@ void HEADHW::motor_release(uint8_t joint){
 #endif
 }
 void HEADHW::motor_lock(uint8_t joint){
-	printf("MOTOR LOCKED!\n");
+	ROS_INFO("MOTOR LOCKED!\n");
 #ifndef NO_WIRINGPI
 	wiringPiI2CWriteReg8(fd[HEAD_R][0],CONTROL,A(joint));
 	wiringPiI2CWriteReg8(fd[HEAD_R][1],CONTROL,B(joint));
@@ -156,27 +158,37 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
   head_step_cmd_[HEAD_R] =(int) RAD2STEP(head_cmd_[HEAD_R]);
   head_step_cmd_[HEAD_Y] =(int) RAD2STEP(head_cmd_[HEAD_Y]);
 
+
   if(stepcnt[HEAD_R]<head_step_cmd_[HEAD_R]){
+    drv[HEAD_R] = 1;
     ccwstep(HEAD_R);
     stepcnt[HEAD_R]++;
   }else if(stepcnt[HEAD_R]>head_step_cmd_[HEAD_R]){
+    drv[HEAD_R] = 1;
     cwstep(HEAD_R);
     stepcnt[HEAD_R]--;
   }else{
-    motor_release(HEAD_R);
+    if(drv[HEAD_R]==1) {motor_release(HEAD_R); ROS_DEBUG("HEAD_Y Released.\n"); }
+    drv[HEAD_R] = 0;
   }
+  #ifdef NO_WIRINGPI
+  ROS_DEBUG("WR:%d %.3lf %d\n",drv[HEAD_R],head_pos_[HEAD_R],stepcnt[HEAD_R]);
+  #endif
   if(stepcnt[HEAD_Y]<head_step_cmd_[HEAD_Y]){
+    drv[HEAD_Y] = 1;
     ccwstep(HEAD_Y);
     stepcnt[HEAD_Y]++;
   }else if(stepcnt[HEAD_Y]>head_step_cmd_[HEAD_Y]){
+    drv[HEAD_Y] = 1;
     cwstep(HEAD_Y);
     stepcnt[HEAD_Y]--;
   }else{
-    motor_release(HEAD_Y);
+    if(drv[HEAD_Y]==1) {motor_release(HEAD_Y); ROS_DEBUG("HEAD_Y Released.\n"); }
+    drv[HEAD_Y] = 0;
   }
 
   #ifdef NO_WIRINGPI
-  printf("W: %.3lf %.3lf %d %d\n",head_pos_[HEAD_R],head_pos_[HEAD_Y],stepcnt[HEAD_R],stepcnt[HEAD_Y]);
+  ROS_DEBUG("WY:%d %.3lf %d\n",drv[HEAD_Y],head_pos_[HEAD_Y],stepcnt[HEAD_Y]);
   #endif
 
   // Dump cmd_ from MoveIt!, current simulated real robot pos_.
@@ -191,7 +203,7 @@ HEADHW::~HEADHW()
   wiringPiI2CWriteReg8(fd_mux[1], 0x0 ,0x00);
   #endif
   motor_release(-1);
-  printf("Motor driver off : HEADHW\n");
+  ROS_INFO("Motor driver off : HEADHW\n");
 }
 
 }
