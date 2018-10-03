@@ -1,15 +1,21 @@
-//#define NO_WIRINGPI
 
-#ifndef NO_WIRINGPI
-#include <wiringPi.h>
-#include <wiringPiI2C.h>
-#endif
+#include "COMMOHW.h"
 
 #include <ros/ros.h>
 #include <ros/time.h>
 #include <controller_manager/controller_manager.h>
 #include <combined_robot_hw/combined_robot_hw.h>
+#include "std_msgs/String.h"
+#include <sstream>
 
+
+
+void reset_home_Callback(const std_msgs::Int32::ConstPtr& msg)
+{
+  //reset_HOME = msg->data;
+  ROS_INFO("Reset Home position: %d", reset_HOME);
+  reset_HOME = 1;
+}
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +27,8 @@ int main(int argc, char *argv[])
   //if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
   //   ros::console::notifyLoggerLevelsChanged();
   //}
+
+
 
 #ifndef NO_WIRINGPI
   fd = wiringPiI2CSetup(0x70);
@@ -36,6 +44,9 @@ int main(int argc, char *argv[])
   printf("Initialize Status: %d \n",init_success);
 
   controller_manager::ControllerManager cm(&hw, nh);
+
+// rostopic pub -1 /bluecrescent_control/reset_HOME std_msgs/Int32 1
+  ros::Subscriber sub = nh.subscribe("reset_HOME", 1000, reset_home_Callback);
 
   //ros::Duration period(0.02);
   ros::Duration period(0.01);

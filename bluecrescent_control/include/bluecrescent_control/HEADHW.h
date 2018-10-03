@@ -13,7 +13,9 @@ public:
   virtual bool init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh);
   virtual void read(const ros::Time& time,const ros::Duration& period);
   virtual void write(const ros::Time& time,const ros::Duration& period);
+  virtual void reset_home_Callback(const std_msgs::Int32::ConstPtr& msg);
 
+  virtual void motor_select(uint8_t drv_status);
   virtual void motor_release(uint8_t joint);
   virtual void motor_lock(uint8_t joint);
   virtual void cwstep(uint8_t joint);
@@ -28,12 +30,11 @@ private:
   double head_pos_[3];
   double head_vel_[3];
   double head_eff_[3];
-  int stepcnt[3];
+  int stepcnt[3]; // Current angle [step]
   unsigned char drv8830_addr[3][2]; // [PLACE][RPY][8830_0,8830_1]
   int fd[3][2];
   int fd_mux[2];
   int drv[3];
-  int switching;
 
 drv8830reg drvreg[4];
 motorstep step[4];
