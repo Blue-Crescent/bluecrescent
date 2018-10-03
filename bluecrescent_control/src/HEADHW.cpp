@@ -6,14 +6,6 @@ namespace bluecrescent_control{
 
 HEADHW::HEADHW()
   {
-	head_cmd_[HEAD_R]= 0;
-	head_pos_[HEAD_R]= 0;
-	head_vel_[HEAD_R]= 0;
-	head_eff_[HEAD_R]= 0;
-	head_cmd_[HEAD_Y]= 0;
-	head_pos_[HEAD_Y]= 0;
-	head_vel_[HEAD_Y]= 0;
-	head_eff_[HEAD_Y]= 0;
 
 	// HALFSTEP
 	step[HEAD_R].A   = 0xC1;
@@ -48,10 +40,19 @@ HEADHW::HEADHW()
    	fd[HEAD_Y][1] = wiringPiI2CSetup(drv8830_addr[HEAD_Y][1]);
 #endif
 
-        stepcnt[HEAD_R] = 0;
-        stepcnt[HEAD_Y] = 0;
-        drv[HEAD_R] = 0;
-        drv[HEAD_Y] = 0;
+
+  using namespace hardware_interface;
+  hardware_interface::JointStateHandle state_handle_head_yaw("head_yaw", &head_pos_[HEAD_Y], &head_vel_[HEAD_Y], &head_eff_[HEAD_Y]);
+  hardware_interface::JointStateHandle state_handle_head_roll("head_roll", &head_pos_[HEAD_R], &head_vel_[HEAD_R], &head_eff_[HEAD_R]);
+  jnt_state_interface.registerHandle(state_handle_head_yaw);
+  jnt_state_interface.registerHandle(state_handle_head_roll);
+
+  hardware_interface::JointHandle pos_handle_head_roll(jnt_state_interface.getHandle("head_roll"), &head_cmd_[HEAD_R]);
+  hardware_interface::JointHandle pos_handle_head_yaw(jnt_state_interface.getHandle("head_yaw"), &head_cmd_[HEAD_Y]);
+  jnt_pos_interface.registerHandle(pos_handle_head_roll);
+  jnt_pos_interface.registerHandle(pos_handle_head_yaw);
+
+  registerInterface(&jnt_state_interface); registerInterface(&jnt_pos_interface);
 }
 
 
@@ -134,22 +135,22 @@ void HEADHW::ccwstep(uint8_t joint){
 
 bool HEADHW::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
 {
-  using namespace hardware_interface;
-  ROS_INFO("This is HEADHW\n");
+  ROS_INFO("HEADHW initialized.\n");
 
+	head_cmd_[HEAD_R] = 0;
+	head_pos_[HEAD_R] = 0;
+	head_vel_[HEAD_R] = 0;
+	head_eff_[HEAD_R] = 0;
+	head_cmd_[HEAD_Y] = 0;
+	head_pos_[HEAD_Y] = 0;
+	head_vel_[HEAD_Y] = 0;
+	head_eff_[HEAD_Y] = 0;
+  stepcnt[HEAD_R] = 0;
+  stepcnt[HEAD_Y] = 0;
+  drv[HEAD_R] = 0;
+  drv[HEAD_Y] = 0;
   //chatter_pub = robot_hw_nh.advertise<std_msgs::String>("chatter", 1000);
 
-  hardware_interface::JointStateHandle state_handle_head_yaw("head_yaw", &head_pos_[HEAD_Y], &head_vel_[HEAD_Y], &head_eff_[HEAD_Y]);
-  hardware_interface::JointStateHandle state_handle_head_roll("head_roll", &head_pos_[HEAD_R], &head_vel_[HEAD_R], &head_eff_[HEAD_R]);
-  jnt_state_interface.registerHandle(state_handle_head_yaw);
-  jnt_state_interface.registerHandle(state_handle_head_roll);
-
-  hardware_interface::JointHandle pos_handle_head_roll(jnt_state_interface.getHandle("head_roll"), &head_cmd_[HEAD_R]);
-  hardware_interface::JointHandle pos_handle_head_yaw(jnt_state_interface.getHandle("head_yaw"), &head_cmd_[HEAD_Y]);
-  jnt_pos_interface.registerHandle(pos_handle_head_roll);
-  jnt_pos_interface.registerHandle(pos_handle_head_yaw);
-
-  registerInterface(&jnt_state_interface); registerInterface(&jnt_pos_interface);
   return true;
 }
 void HEADHW::read(const ros::Time& time,const ros::Duration& period)
@@ -167,11 +168,6 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
 
   motor_select(drv[HEAD_R]+drv[HEAD_Y]);
 
-  if(reset_HOME){
-     stepcnt[HEAD_R] = 0;
-     stepcnt[HEAD_Y] = 0;
-     reset_HOME = 0;
-  }
   // HEAD_R
     if(stepcnt[HEAD_R]<head_step_cmd_[HEAD_R]){
       drv[HEAD_R] = 1;

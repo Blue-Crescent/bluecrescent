@@ -76,7 +76,6 @@ typedef struct
  unsigned char nB;
 }motorstep;
 
-static int reset_HOME;
 
 //FULL STEP
 //motorstep step[4] = {

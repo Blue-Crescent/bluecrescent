@@ -1,10 +1,11 @@
 
 #include <bluecrescent_control/COMMONHW.h>
 
+int reset_HOME;
 
 void reset_home_Callback(const std_msgs::Int32::ConstPtr& msg)
 {
-  //reset_HOME = msg->data;
+  reset_HOME = msg->data;
   ROS_INFO("Reset Home position: %d", msg->data);
 }
 
@@ -13,7 +14,7 @@ void reset_home_Callback(const std_msgs::Int32::ConstPtr& msg)
 int main(int argc, char *argv[])
 {
   int fd;
-
+  reset_HOME=0;
   ros::init(argc, argv, "bluecrescent_control");
 
   // enabling ROS_DEBUG
@@ -45,6 +46,10 @@ int main(int argc, char *argv[])
   ros::Duration period(0.01);
   while(ros::ok())
   {
+    if(reset_HOME){
+       hw.init(nh,nh);
+       reset_HOME = 0;
+    }
     hw.read(ros::Time::now(), period);
     cm.update(ros::Time::now(), period);
     hw.write(ros::Time::now(), period);
