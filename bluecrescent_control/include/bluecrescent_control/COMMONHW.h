@@ -1,4 +1,4 @@
-//#define NO_WIRINGPI
+#define NO_WIRINGPI
 
 #ifndef NO_WIRINGPI
 #include <wiringPi.h>
@@ -6,13 +6,18 @@
 #endif
 
 #include <ros/ros.h>
+#include <ros/time.h>
+#include <ros/package.h>
+#include <angles/angles.h>
+#include <std_msgs/Int32.h>
+#include <pluginlib/class_list_macros.h>
+
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/robot_hw.h>
 
-#include <ros/package.h>
-#include <angles/angles.h>
-#include <pluginlib/class_list_macros.h>
+#include <controller_manager/controller_manager.h>
+#include <combined_robot_hw/combined_robot_hw.h>
 
 #define DURATION 0.01
 

@@ -52,7 +52,6 @@ HEADHW::HEADHW()
         stepcnt[HEAD_Y] = 0;
         drv[HEAD_R] = 0;
         drv[HEAD_Y] = 0;
-	      switching=HEAD_R;
 }
 
 

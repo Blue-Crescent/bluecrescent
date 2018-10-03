@@ -13,7 +13,6 @@ public:
   virtual bool init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh);
   virtual void read(const ros::Time& time,const ros::Duration& period);
   virtual void write(const ros::Time& time,const ros::Duration& period);
-  virtual void reset_home_Callback(const std_msgs::Int32::ConstPtr& msg);
 
   virtual void motor_select(uint8_t drv_status);
   virtual void motor_release(uint8_t joint);

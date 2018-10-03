@@ -1,21 +1,14 @@
 
-#include "COMMOHW.h"
-
-#include <ros/ros.h>
-#include <ros/time.h>
-#include <controller_manager/controller_manager.h>
-#include <combined_robot_hw/combined_robot_hw.h>
-#include "std_msgs/String.h"
-#include <sstream>
-
+#include <bluecrescent_control/COMMONHW.h>
 
 
 void reset_home_Callback(const std_msgs::Int32::ConstPtr& msg)
 {
   //reset_HOME = msg->data;
-  ROS_INFO("Reset Home position: %d", reset_HOME);
-  reset_HOME = 1;
+  ROS_INFO("Reset Home position: %d", msg->data);
 }
+
+
 
 int main(int argc, char *argv[])
 {
