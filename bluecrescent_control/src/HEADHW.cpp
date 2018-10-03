@@ -7,6 +7,15 @@ namespace bluecrescent_control{
 HEADHW::HEADHW()
   {
 
+	head_cmd_[HEAD_R] = 0;
+	head_pos_[HEAD_R] = 0;
+	head_vel_[HEAD_R] = 0;
+	head_eff_[HEAD_R] = 0;
+	head_cmd_[HEAD_Y] = 0;
+	head_pos_[HEAD_Y] = 0;
+	head_vel_[HEAD_Y] = 0;
+	head_eff_[HEAD_Y] = 0;
+	
 	// HALFSTEP
 	step[HEAD_R].A   = 0xC1;
 	step[HEAD_R].nA  = (0x1C << 1);
@@ -79,7 +88,7 @@ void HEADHW::motor_release(uint8_t joint){
 	   wiringPiI2CWriteReg8(fd[HEAD_Y][1],CONTROL,0x18);
      break;
     default:
-     ROS_INFO("ALL HEAD drivers off\n");
+     printf("Motor driver off : HEADHW\n");
 	   wiringPiI2CWriteReg8(fd[HEAD_R][0],CONTROL,0x18);
 	   wiringPiI2CWriteReg8(fd[HEAD_R][1],CONTROL,0x18);
 	   wiringPiI2CWriteReg8(fd[HEAD_Y][0],CONTROL,0x18);
@@ -137,14 +146,6 @@ bool HEADHW::init(ros::NodeHandle& root_nh, ros::NodeHandle &robot_hw_nh)
 {
   ROS_INFO("HEADHW initialized.\n");
 
-	head_cmd_[HEAD_R] = 0;
-	head_pos_[HEAD_R] = 0;
-	head_vel_[HEAD_R] = 0;
-	head_eff_[HEAD_R] = 0;
-	head_cmd_[HEAD_Y] = 0;
-	head_pos_[HEAD_Y] = 0;
-	head_vel_[HEAD_Y] = 0;
-	head_eff_[HEAD_Y] = 0;
   stepcnt[HEAD_R] = 0;
   stepcnt[HEAD_Y] = 0;
   drv[HEAD_R] = 0;
@@ -204,8 +205,8 @@ void HEADHW::write(const ros::Time& time,const ros::Duration& period)
 }
 HEADHW::~HEADHW()
 {
-  motor_select(1);
-  motor_release(-1);
+  motor_select(0);
+  motor_release(255);
 }
 
 }
